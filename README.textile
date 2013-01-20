@@ -1,0 +1,13 @@
+h1. Yet Another Password Meter
+
+h2. Introduction 
+
+p. Yet Another Password Meter on GIT is a rewrite of http://www.yetanotherpasswordmeter.com/
+
+h2. License
+
+h2. Libraries Used
+
+* Jasmine, to test the code
+* TypeScript, to write better JavaScript
+* Bootstrap, to get CSS and HTML running
