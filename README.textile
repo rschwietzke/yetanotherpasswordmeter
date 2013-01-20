@@ -11,3 +11,4 @@ h2. Libraries Used
 * Jasmine, to test the code
 * TypeScript, to write better JavaScript
 * Bootstrap, to get CSS and HTML running
+* Parts of "LeetPassword":https://github.com/rozuur/leetpassword (License not specified)

@@ -17,6 +17,13 @@ describe("YAPM", function() {
 		it("Shorter than minimum length", function() {yapm.check("1234567");expect(yapm.score).toBe(-100);});		
 		
 		it("Less than half of minimum length", function() {yapm.check("123");expect(yapm.score).toBe(-200);});		
-		
+	});
+	
+	describe("Leet", function() {
+		beforeEach(function() {
+			leet = new YAPM.LeetTranslator();
+		});
+
+		it("Wikipedia", function() {expect(leet.decode("\\/\\/1|<1P3[)14")).toBe("WIKIPEDIA");});
 	});
 });

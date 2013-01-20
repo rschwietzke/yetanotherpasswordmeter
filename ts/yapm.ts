@@ -51,6 +51,9 @@
 *    * Seem to contain a year 19XX or 20XX
 */
 module YAPM {
+	// the version of it
+	export static VERSION = "1.9.9";
+	
 	// The password under test.
 	export var password: string = "";
 
@@ -80,6 +83,59 @@ module YAPM {
 		check(data: string): void;
 	}
 	
+	export class LeetTranslator {
+		leetMap: {};
+		
+		constructor () {
+		    var mappings: {};
+			mappings['A'] = new Array("4","/-\\","@","^","/\\","//-\\\\","/=\\");
+			mappings['B'] = new Array('8', ']3', ']8', '|3', '|8', ']]3', '13');
+			mappings['C'] = new Array('(', '{' , '[', '<', '€');
+			mappings['D'] = new Array(')', '[}', '|)', '|}', '|>', '[>', ']]');
+			mappings['E'] = new Array("3","ii","(=");
+			mappings['F'] = new Array('|=', '(=', ']]=', 'ph');
+			mappings['G'] = new Array('6', '9', '(_>', '[[6', '&');
+			mappings['H'] = new Array('#', '|-|', '(-)', ')-(', '}{', '}-{', '{-}', '/-/', '\\-\\', '|~|', '[]-[]', ']]-[[', '+');
+			mappings['I'] = new Array('1', '!', '|', '][', '[]');  
+			mappings['J'] = new Array('_|', 'u|', ';_[]', ';_[[');
+			mappings['K'] = new Array('|<', '|{', '][<', ']]<', '[]<');
+			mappings['L'] = new Array('|', '1', '|_', '[]_', '][_', '\xa3');
+			mappings['M'] = new Array('/\\/\\', '|\\/|', '[\\/]', '(\\/)', '/V\\', '[]V[]', '\\\\\\', '(T)', '^^', '.\\\\', '//.', '][\\\\//][', 'JVL');
+			mappings['N'] = new Array('/\\/', '|\\|', '(\\)', '/|/', '[\\]', '{\\}', '][\\][', '[]\\[]', '~');
+			mappings['O'] = new Array('0', '()', '[]', '<>', '*', '[[]]');
+			mappings['P'] = new Array('|D', '|*', '|>', '[]D', '][D');
+			mappings['Q'] = new Array('(,)' , '0,' , 'O,' , 'O\\', '[]\\');
+			mappings['R'] = new Array('|2', '|?', '|-', ']]2 []2 ][2');
+			mappings['S'] = new Array('5', '$', '\x9a');
+			mappings['T'] = new Array('7', '+', "']'", '7`', '~|~', '-|-', "']['", '"|"', '\x86');
+			mappings['U'] = new Array('(_)', '|_|', '\\_\\', '/_/', '\\_/', '[]_[]', ']_[', '\xb5');
+			mappings['V'] = new Array('\\/', '\\\\//', 'v');
+			mappings['W'] = new Array('\\/\\/', '|/\\|', '[/\\]', '(/\\)', 'VV', '///', '\\^/', '\\\\/\\//', '1/\\/', '\\/1/', '1/1/');
+			mappings['X'] = new Array('><', '}{', ')(', '}[');
+			mappings['Y'] = new Array("'/", '%', '`/', '\\j', '``//', '\xa5', 'j', '\\|/', '-/');
+			mappings['Z'] = new Array('2', 'z', '7_', '`/_');  
+
+			for(var key in mappings) {
+				var list: {} = mappings[key];
+				for (var value in list) {
+					this.leetMap[value] = key;
+				}
+			}
+		}
+		
+		export decode(text: string): string {
+			var result: string = "";
+			var uppercasedText: string = text.toUpperCase();
+			
+			for (var i = 0; i < uppercasedText.length); i++) {
+				var c = uppercasedText.charAt(i);
+				result.concat(this.leetMap[c]);
+			}
+			
+			return result;
+		}
+	}
+	
 	/**
 	 * Checks the password length
 	 */
@@ -106,6 +162,8 @@ module YAPM {
 			else if (length < Length.MINIMUMLENGTH / 2) {
 				this.score = -200;
 			}
+		}
+	}
 	
 	/**
 	 * This is the "main" class and is your way to access the functionality
