@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		
+		<title>Yet Another Password Meter v2.0</title>
+		
+		<link rel="stylesheet" type="text/css" href="jasmine-1.3.1/jasmine.css">
+		<script type="text/javascript" src="jasmine-1.3.1/jasmine.js"></script>
+		<script type="text/javascript" src="jasmine-1.3.1/jasmine-html.js"></script>
+	</head>
+	<body>
+		<head>
+			YAPM
+		</head>
+		
+		<!-- Our TS file -->
+		<script type="text/typescript" src="ts/yapm.ts"></script>		
+		
+		<!-- This compiles our typescript part into JavaScript -->
+		<script type="text/javascript" src="js/typescript.min.js"></script>
+		<script type="text/javascript" src="js/typescript.compile.min.js"></script>
+		
+		<!-- Out test definitions for the TS part -->
+		<script type="text/javascript" src="spec/yapm.js"></script>
+		
+		<!-- Run Jasmin tests -->
+		<script>
+			(function() {
+				var jasmineEnv = jasmine.getEnv();
+				jasmineEnv.updateInterval = 250;
+  
+				var htmlReporter = new jasmine.HtmlReporter();
+				jasmineEnv.addReporter(htmlReporter);
+  
+				jasmineEnv.specFilter = function(spec) {
+					return htmlReporter.specFilter(spec);
+				}; 
+  
+				function execJasmine() {
+					jasmineEnv.execute();
+				}
+				
+				execJasmine();
+
+			})();
+		</script>
+	</body>
+</html>
