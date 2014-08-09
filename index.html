@@ -1,0 +1,718 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Yet Another Password Meter - Test Your Passwords</title>
+
+	<link href="/css/default.css" rel="stylesheet" type="text/css" />
+	<link href="/css/jquery.cluetip.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript" src="/js/password-meter.js"><!-- nothing --></script>
+	<script type="text/javascript" src="/js/jquery-1.2.6.js"><!-- nothing --></script>
+	<script type="text/javascript" src="/js/jquery-ui-personalized-1.5.3.js"><!-- nothing --></script>
+	<script type="text/javascript" src="/js/jquery.dimensions-1.2.js"><!-- nothing --></script>
+	<script type="text/javascript" src="/js/jquery.cluetip.js"><!-- nothing --></script>
+
+<script type="text/javascript">
+	// <![CDATA[
+	function testPassword(element)
+	{
+		var password = element.text;
+		var inputField = $("#password");
+		inputField.val(password);
+
+		checkPassword(password);
+	}
+
+	function evaluateStatus(parentselector, selector, status)
+	{
+		var row = $(selector);
+		var element = $(selector + " .status");
+
+		// remove old class
+		element.removeClass("failed");
+		element.removeClass("passed");
+		element.removeClass("exceeded");
+
+		var p = new PasswordMeter();
+		if (status == p.STATUS.FAILED)
+		{
+			element.addClass("failed");
+		}
+		else if (status == p.STATUS.PASSED)
+		{
+			element.addClass("passed");
+		}
+		else if (status == p.STATUS.EXCEEDED)
+		{
+			element.addClass("exceeded");
+		}
+
+		// get old status and save new, highlight when changed
+		var old = element.data("status");
+		if (old != status)
+		{
+			row.effect("highlight", {color: "#ffff00"}, 800).addClass("lastChanged");
+			element.data("status", status);
+		}
+	}
+
+	function isBonusOrPenalty(element, rating, pm)
+	{
+		// remove old class
+
+		if (rating < 0)
+		{
+			// set classes
+			// TODO
+			return element.html(pm.float2str(rating));
+		}
+		else if(rating > 0)
+		{
+			// set classes
+			// TODO
+			return element.html("+" + pm.float2str(rating));
+		}
+		else
+		{
+			// set classes
+			// TODO
+			return element.html("0");
+		}
+	}
+
+	function assignData(selector, data, pm)
+	{
+		evaluateStatus("#passwordCriterias table", selector, data.status);
+		$(selector + " .count").html(pm.int2str(data.count));
+		isBonusOrPenalty($(selector + " .rating"), data.rating, pm);
+
+		$(selector + " .minimum").html(pm.int2str(data.minimum));
+		$(selector + " .bonus").html(pm.int2str(data.bonus));
+		$(selector + " .penalty").html(pm.int2str(data.penalty));
+	}
+
+	/**
+	 * Reset the state of the display area
+	 */
+	function cleanState()
+	{
+		// clean the last state marker
+		$("#passwordCriterias table tr").removeClass("lastChanged");
+	}
+
+	function checkPassword()
+	{
+		// get the input field
+		var passwordField = $("#password");
+
+		// get the value, basically the password
+		var password = passwordField.val();
+
+		var oldStatus = passwordField.data("prePassword");
+		if (oldStatus == password)
+		{
+			// no change, leave and do nothing
+			return;
+		}
+		passwordField.data("prePassword", password);
+
+		var pm = new PasswordMeter();
+		pm.checkPassword(password);
+
+		$("#score").html(pm.int2str(pm.Score.adjusted) + "%");
+		$("#originalscore").html(pm.float2str(pm.Score.count));
+		$("#beforeRedundancyScore").html(pm.float2str(pm.Score.beforeRedundancy));
+		$("#redundancy").html(pm.float2str(pm.Redundancy.value));
+
+		// clean the last state marker
+		cleanState();
+
+		// assign PasswordLength information
+		assignData("#PasswordLength", pm.PasswordLength, pm);
+
+		// assign nBasicRequirementsMet information
+		assignData("#BasicRequirements", pm.BasicRequirements, pm);
+
+		// assign RecommendedLength information
+		assignData("#RecommendedPasswordLength", pm.RecommendedPasswordLength, pm);
+
+		// assign LowercaseLetters information
+		assignData("#LowercaseLetters", pm.LowercaseLetters, pm);
+
+		// assign UppercaseLetters information
+		assignData("#UppercaseLetters", pm.UppercaseLetters, pm);
+
+		// assign Numerics information
+		assignData("#Numerics", pm.Numerics, pm);
+
+		// assign Symbols information
+		assignData("#Symbols", pm.Symbols, pm);
+
+		// assign MiddleNumerics information
+		assignData("#MiddleNumerics", pm.MiddleNumerics, pm);
+
+		// assign MiddleSymbols information
+		assignData("#MiddleSymbols", pm.MiddleSymbols, pm);
+
+		// assign SequentialLetters information
+		assignData("#SequentialLetters", pm.SequentialLetters, pm);
+
+ 		// assign SequentialNumerics information
+		assignData("#SequentialNumerics", pm.SequentialNumerics, pm);
+
+ 		// assign KeyboardPatterns information
+		assignData("#KeyboardPatterns", pm.KeyboardPatterns, pm);
+
+ 		// assign RepeatedSequences information
+		assignData("#RepeatedSequences", pm.RepeatedSequences, pm);
+
+ 		// assign MirroredSequences information
+		assignData("#MirroredSequences", pm.MirroredSequences, pm);
+
+		// set complexity
+		var complexity = pm.Complexity.value;
+		var indicator = $("#complexity");
+
+		// remove class
+		indicator.removeClass("veryweak weak good strong verystrong");
+
+		if (complexity == pm.COMPLEXITY.VERYWEAK)
+		{
+			indicator.html("Very Weak");
+			indicator.addClass("veryweak");
+		}
+		else if (complexity == pm.COMPLEXITY.WEAK)
+		{
+			indicator.html("Weak");
+			indicator.addClass("weak");
+		}
+		else if (complexity == pm.COMPLEXITY.GOOD)
+		{
+			indicator.html("Good");
+			indicator.addClass("good");
+		}
+		else if (complexity == pm.COMPLEXITY.STRONG)
+		{
+			indicator.html("Strong");
+			indicator.addClass("strong");
+		}
+		else if (complexity == pm.COMPLEXITY.VERYSTRONG)
+		{
+			indicator.html("Very Strong");
+			indicator.addClass("verystrong");
+		}
+	}
+
+	function togglePasswordMask(command)
+	{
+		var showPassword = $("#showPassword");
+		var hidePassword = $("#hidePassword");
+
+		var myPasswords  = $("#myPasswords");
+
+		if (command == "Show")
+		{
+			showPassword.hide();
+			hidePassword.show();
+			myPasswords.slideDown(1000);
+		}
+		else
+		{
+			showPassword.show();
+			hidePassword.hide();
+			myPasswords.slideUp(1000);
+		}
+
+		// save value
+		var password = $("#password");
+		var passwordHidden = $("#passwordHidden");
+
+		passwordHidden.val(password.val());
+
+		password.attr("id", "passwordTemp");
+		passwordHidden.attr("id", "password");
+		password.attr("id", "passwordHidden");
+	}
+
+	function storePassword()
+	{
+		// get my passwords area
+		var myPasswords     = $("#myPasswords");
+		var myPasswordsArea = $("#myPasswords p.data");
+
+		var password = $("#password");
+		var currentPassword = password.val();
+
+		// create element and add
+		myPasswordsArea.append("<a href=\"#\" onclick=\"testPassword(this); return false;\">" + currentPassword + "<\/a> ");
+
+		// display if hidden
+		myPasswords.slideDown(1000);
+	}
+
+	$(document).ready(
+		function()
+		{
+			var password = $("#password").val();
+
+			// this trick cleans the display area on reload
+			checkPassword(password);
+			cleanState();
+			checkPassword(password);
+
+			// insert the tool tips
+			$("#passwordCriterias td.description a").cluetip(
+				{
+					fx: {open: "fadeIn"},
+					local: true,
+					hideLocal: true,
+					attribute:  'rel',    // the attribute to be used for fetching the clueTip's body content
+				    titleAttribute: 'title',  // the attribute to be used for fetching the clueTip's title
+					positionBy: 'auto' // next to the mouse
+				    // splitTitle: '|' // use the invoking element's title attribute to populate the clueTip...
+				                    // ...and split the contents into separate divs where there is a "|"
+				});
+
+			// set version
+			$("#footer .version").html(new PasswordMeter().version);
+		}
+	);
+	// ]]>
+</script>
+</head>
+
+<body>
+<div id="container">
+	<div id="header">
+		<h1>Yet Another Password Meter<span class="betamarker">Beta</span></h1>
+	</div>
+
+	<div id="content">
+		<div id="sidebar">
+			<div id="myPasswords" class="passwordList">
+				<h2>My Passwords</h2>
+				<p class="description">You have temporarily stored these passwords for evaluation.</p>
+				<p class="data">
+					&nbsp;
+					<!-- <a href="#" onclick="testPassword(this); return false;">t88t88</a> -->
+				</p>
+			</div>
+
+			<div id="testPasswords" class="passwordList">
+				<h2>Test Passwords</h2>
+				<p class="description">Feel free to try these password to learn more about the scoring.</p>
+				<p class="data">
+					<a href="#" onclick="testPassword(this); return false;">password</a>
+					<a href="#" onclick="testPassword(this); return false;">Jane2008</a>
+					<a href="#" onclick="testPassword(this); return false;">Jane2008Jane2008</a>
+					<a href="#" onclick="testPassword(this); return false;">Foobar</a>
+					<a href="#" onclick="testPassword(this); return false;">Foobar99</a>
+					<a href="#" onclick="testPassword(this); return false;">qwertz</a>
+					<a href="#" onclick="testPassword(this); return false;">Qw3rt2</a>
+					<a href="#" onclick="testPassword(this); return false;">71562563512</a>
+					<a href="#" onclick="testPassword(this); return false;">catecate</a>
+					<a href="#" onclick="testPassword(this); return false;">catekate</a>
+					<a href="#" onclick="testPassword(this); return false;">foo99foo99</a>
+					<a href="#" onclick="testPassword(this); return false;">12testtest</a>
+					<a href="#" onclick="testPassword(this); return false;">wolwOlWol</a>
+					<a href="#" onclick="testPassword(this); return false;">Foooob</a>
+					<a href="#" onclick="testPassword(this); return false;">QtessetZ</a>
+				</p>
+			</div>
+
+			<div id="blog">
+				<h2><a href="http://blog.yetanotherpasswordmeter.com/">Blog</a></h2>
+				<p>
+					Of course, we also have a <a href="http://blog.yetanotherpasswordmeter.com/">blog</a>.
+					We want to keep you informed about all the things that are going on. Additionally
+					we like to hear your feedback. Feel free to post your suggestions.
+				</p>
+			</div>
+
+			<div id="disclaimer">
+				<h2>Disclaimer</h2>
+				<p>
+					This web site does not transfer data to any server. The application runs strictly in your
+					web browser. The metrics about your passwords is based on observation and best practices. They
+					are just recommendations and do not guarantee that your password is really safe. We try to
+					support you in finding a password that is suitable but we do not guarantee that it is perfect.
+				</p>
+				<p>
+					The <a href="/download/yapm-src.zip" title="The source code">full source code</a> of this
+					application is available under CC-GPL-2.0. Feel free to examine, modify, and redistribute it.
+				</p>
+			</div>
+
+		</div>
+
+		<div id="passwordDetails">
+			<h2>Evaluate Your Password</h2>
+			<table>
+				<tr class="password">
+					<td class="key">Password:</td>
+					<td>
+						<form id="passwordForm" action="#">
+						<fieldset>
+							<input type="text" value="" id="password" name="password" maxlength="255" onkeyup="checkPassword(this.value);" />
+							<input type="password" value="" id="passwordHidden" name="password" maxlength="255" onkeyup="checkPassword(this.value);" />
+							<a href="#" onclick="storePassword(); return false;">Store</a>
+						</fieldset>
+						</form>
+					</td>
+				</tr>
+				<tr class="visibility">
+					<td class="key">Visibility:</td>
+					<td>
+						<a href="#" id="showPassword" onclick="togglePasswordMask('Show'); return false;">Show</a>
+						<a href="#" id="hidePassword" onclick="togglePasswordMask('Hide'); return false;">Hide</a>
+					</td>
+				</tr>
+				<tr>
+					<td class="key">Before Redundancy Score:</td>
+					<td><span id="beforeRedundancyScore">0</span></td>
+				</tr>
+				<tr>
+					<td class="key">Redundancy:</td>
+					<td><span id="redundancy">0</span></td>
+				</tr>
+				<tr>
+					<td class="key">Original Score:</td>
+					<td><span id="originalscore">0</span></td>
+				</tr>
+				<tr>
+					<td class="key">Score:</td>
+					<td><span id="score">0%</span></td>
+				</tr>
+				<tr>
+					<td class="key">Complexity:</td>
+					<td><span id="complexity">Too Short</span></td>
+				</tr>
+			</table>
+		</div>
+
+		<div id="passwordCriterias">
+			<table>
+				<tr>
+					<th class="status">&nbsp;</th>
+					<th class="type">Type</th>
+					<th class="description">Description</th>
+					<th class="minimum number">Minimum</th>
+					<th class="count number">Count</th>
+					<th class="bonus number">Bonus</th>
+					<th class="penalty number">Penalty</th>
+					<th class="rating number">Rating</th>
+				</tr>
+				<tr id="BasicRequirements">
+					<td class="status">&nbsp;</td>
+					<td class="type">T</td>
+					<td class="description"><a href="#" title="Basic Requirements" rel="#BasicRequirementsDesc">Basic Requirements</a></td>
+					<td class="minimum number">&nbsp;</td>
+					<td class="count number">&nbsp;</td>
+					<td class="bonus number">&nbsp;</td>
+					<td class="penalty number">&nbsp;</td>
+					<td class="rating number">&nbsp;</td>
+				</tr>
+				<tr id="PasswordLength">
+					<td class="status">&nbsp;</td>
+					<td class="type">T</td>
+					<td class="description"><a href="#" title="Character Count" rel="#PasswordLengthDesc">Character Count<span class="requirement">*</span></a></td>
+					<td class="minimum number">&nbsp;</td>
+					<td class="count number">&nbsp;</td>
+					<td class="bonus number">&nbsp;</td>
+					<td class="penalty number">&nbsp;</td>
+					<td class="rating number">&nbsp;</td>
+				</tr>
+				<tr id="RecommendedPasswordLength">
+					<td class="status">&nbsp;</td>
+					<td class="type">T</td>
+					<td class="description"><a href="#" title="Recommended Character Count " rel="#RecommendedPasswordLengthDesc">Recommended Character Count</a></td>
+					<td class="minimum number">&nbsp;</td>
+					<td class="count number">&nbsp;</td>
+					<td class="bonus number">&nbsp;</td>
+					<td class="penalty number">&nbsp;</td>
+					<td class="rating number">&nbsp;</td>
+				</tr>
+				<tr id="LowercaseLetters">
+					<td class="status">&nbsp;</td>
+					<td class="type">T</td>
+					<td class="description"><a href="#" title="Lowercase Letters" rel="#LowercaseLettersDesc">Lowercase Letters<span class="requirement">*</span></a></td>
+					<td class="minimum number">&nbsp;</td>
+					<td class="count number">&nbsp;</td>
+					<td class="bonus number">&nbsp;</td>
+					<td class="penalty number">&nbsp;</td>
+					<td class="rating number">&nbsp;</td>
+				</tr>
+				<tr id="UppercaseLetters">
+					<td class="status">&nbsp;</td>
+					<td class="type">T</td>
+					<td class="description"><a href="#" title="Uppercase Letters" rel="#UppercaseLettersDesc">Uppercase Letters<span class="requirement">*</span></a></td>
+					<td class="minimum number">&nbsp;</td>
+					<td class="count number">&nbsp;</td>
+					<td class="bonus number">&nbsp;</td>
+					<td class="penalty number">&nbsp;</td>
+					<td class="rating number">&nbsp;</td>
+				</tr>
+				<tr id="Numerics">
+					<td class="status">&nbsp;</td>
+					<td class="type">T</td>
+					<td class="description"><a href="#" title="Numerics" rel="#NumericsDesc">Number of Numerics<span class="requirement">*</span></a></td>
+					<td class="minimum number">&nbsp;</td>
+					<td class="count number">&nbsp;</td>
+					<td class="bonus number">&nbsp;</td>
+					<td class="penalty number">&nbsp;</td>
+					<td class="rating number">&nbsp;</td>
+				</tr>
+				<tr id="Symbols">
+					<td class="status">&nbsp;</td>
+					<td class="type">T</td>
+					<td class="description"><a href="#" title="Symbols" rel="#SymbolsDesc">Number of Symbols<span class="requirement">*</span></a></td>
+					<td class="minimum number">&nbsp;</td>
+					<td class="count number">&nbsp;</td>
+					<td class="bonus number">&nbsp;</td>
+					<td class="penalty number">&nbsp;</td>
+					<td class="rating number">&nbsp;</td>
+				</tr>
+				<tr id="MiddleNumerics">
+					<td class="status">&nbsp;</td>
+					<td class="type">T</td>
+					<td class="description"><a href="#" title="Middle Numerics" rel="#MiddleNumericsDesc">Number of Middle Numbers</a></td>
+					<td class="minimum number">&nbsp;</td>
+					<td class="count number">&nbsp;</td>
+					<td class="bonus number">&nbsp;</td>
+					<td class="penalty number">&nbsp;</td>
+					<td class="rating number">&nbsp;</td>
+				</tr>
+				<tr id="MiddleSymbols">
+					<td class="status">&nbsp;</td>
+					<td class="type">T</td>
+					<td class="description"><a href="#" title="Middle Symbols" rel="#MiddleSymbolsDesc">Number of Middle Symbols</a></td>
+					<td class="minimum number">&nbsp;</td>
+					<td class="count number">&nbsp;</td>
+					<td class="bonus number">&nbsp;</td>
+					<td class="penalty number">&nbsp;</td>
+					<td class="rating number">&nbsp;</td>
+				</tr>
+				<tr id="SequentialLetters">
+					<td class="status">&nbsp;</td>
+					<td class="type">B</td>
+					<td class="description"><a href="#" title="Sequential Letters" rel="#SequentialLettersDesc">Sequential Letters</a></td>
+					<td class="minimum number">&nbsp;</td>
+					<td class="count number">&nbsp;</td>
+					<td class="bonus number">&nbsp;</td>
+					<td class="penalty number">&nbsp;</td>
+					<td class="rating number">&nbsp;</td>
+				</tr>
+				<tr id="SequentialNumerics">
+					<td class="status">&nbsp;</td>
+					<td class="type">B</td>
+					<td class="description"><a href="#" title="Sequential Numerics" rel="#SequentialNumericsDesc">Sequential Numbers</a></td>
+					<td class="minimum number">&nbsp;</td>
+					<td class="count number">&nbsp;</td>
+					<td class="bonus number">&nbsp;</td>
+					<td class="penalty number">&nbsp;</td>
+					<td class="rating number">&nbsp;</td>
+				</tr>
+				<tr id="KeyboardPatterns">
+					<td class="status">&nbsp;</td>
+					<td class="type">B</td>
+					<td class="description"><a href="#" title="Keyboard Patterns" rel="#KeyboardPatternsDesc">Keyboard Patterns used</a></td>
+					<td class="minimum number">&nbsp;</td>
+					<td class="count number">&nbsp;</td>
+					<td class="bonus number">&nbsp;</td>
+					<td class="penalty number">&nbsp;</td>
+					<td class="rating number">&nbsp;</td>
+				</tr>
+				<tr id="RepeatedSequences">
+					<td class="status">&nbsp;</td>
+					<td class="type">B</td>
+					<td class="description"><a href="#" title="Repeated Sequences" rel="#RepeatedSequencesDesc">Sequence was repeated</a></td>
+					<td class="minimum number">&nbsp;</td>
+					<td class="count number">&nbsp;</td>
+					<td class="bonus number">&nbsp;</td>
+					<td class="penalty number">&nbsp;</td>
+					<td class="rating number">&nbsp;</td>
+				</tr>
+				<tr id="MirroredSequences">
+					<td class="status">&nbsp;</td>
+					<td class="type">B</td>
+					<td class="description"><a href="#" title="Mirrored Sequences" rel="#MirroredSequencesDesc">Sequence was mirrored</a></td>
+					<td class="minimum number">&nbsp;</td>
+					<td class="count number">&nbsp;</td>
+					<td class="bonus number">&nbsp;</td>
+					<td class="penalty number">&nbsp;</td>
+					<td class="rating number">&nbsp;</td>
+				</tr>
+			</table>
+		</div>
+
+		<div id="legend">
+			<h2>Legend</h2>
+
+			<table>
+				<tr>
+					<td class="status failed">&nbsp;</td>
+					<td class="desription">This criteria failed. You should change your password to match it.</td>
+				</tr>
+				<tr>
+					<td class="status passed">&nbsp;</td>
+					<td class="desription">Your password passed this criteria.</td></tr>
+				<tr>
+					<td class="status exceeded">&nbsp;</td>
+					<td class="desription">The criteria is exceeded. Your password does well in this category.</td>
+				</tr>
+				<tr>
+					<td class="status lastChanged">&nbsp;</td>
+					<td class="desription">
+						This color marks the recent criteria changes to inform you about the influence of your last
+						modifications.
+					</td>
+				</tr>
+				<tr>
+					<td class="status">T</td>
+					<td class="desription">This is a triple state criteria. It has the states Failed, Passed, and Exceeded.</td>
+				</tr>
+				<tr>
+					<td class="status">B</td>
+					<td class="desription">
+						This is a binary state criteria. It has the states Failed and Passed. So it can be
+						only violated.
+					</td>
+				</tr>
+				<tr>
+					<td class="status">*</td>
+					<td class="desription">
+						This is one of the basic requirements.
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div> <!-- content -->
+
+	<div id="footer">
+		<p class="gpl-logo"><img src="/images/cc-gnu-gpl.png" alt="CC-GNU GPL version 2.0 Logo"/></p>
+
+		<p class="version">1.1.0</p>
+
+		<p class="license">
+			This software is freely available for distribution under the
+			<a href="http://creativecommons.org/licenses/GPL/2.0/" title="The GPL 2.0 License">CC-GNU GPL version 2.0</a>
+			or later.
+		</p>
+
+		<p class="clear"><!-- Clear all --></p>
+	</div>
+
+	<div id="descriptions">
+		<div id="BasicRequirementsDesc">
+			<p>
+				All criterias marked with * are basic requirements. A certain number if these requirements has to be met to
+				get the bonus, otherwise a penalty is applied.
+			</p>
+		</div>
+		<div id="PasswordLengthDesc">
+			<p>
+				The character count is one of the most important factors of a password. The longer the better.
+				A minimum length is required.
+			</p>
+			<p>
+				Sadly enough, not all systems support long passwords.
+			</p>
+		</div>
+		<div id="RecommendedPasswordLengthDesc">
+			<p>
+				This criteria represents the recommended password length. So passing or exceeding this value
+				gives the password an additional bonus. Besides that, you have additional confidence that your
+				password is harder to crack.
+			</p>
+		</div>
+		<div id="LowercaseLettersDesc">
+			<p>
+				Lowercase letters are one type of characters that should be used to increase to amount of possible
+				characters in the password. You increase the "alphabet" size by using from a wide range of characters.
+			</p>
+		</div>
+		<div id="UppercaseLettersDesc">
+			<p>
+				Uppercase letters are important to make your password as difficult as possible to break. Place the uppercase
+				letters not only at the beginning but also at unexpected positions.
+			</p>
+		</div>
+		<div id="NumericsDesc">
+			<p>
+				Numbers enhance the available alphabet and make your password harder. Try to avoid typical easy to guess numbers, such
+				as years, birthdays, or common numbers like the famous 42.
+			</p>
+		</div>
+		<div id="SymbolsDesc">
+			<p>
+				Symbols are the main incredient of a good password. First of all the alphabet gets bigger, secondly you brake the common
+				pattern of having a plain word. So, instead of "Hammer", you write "H*mme/" or even better "Ha@m-mer!".
+			</p>
+		</div>
+		<div id="MiddleNumericsDesc">
+			<p>
+				Numbers at the end are really common, so we give your password an additional bonus when you put your numbers in the middle.
+			</p>
+		</div>
+		<div id="MiddleSymbolsDesc">
+			<p>
+				A lot of people use symbols to enhance their passwords, but they simply put the stuff at the end, so we honor symbols in the middle.
+			</p>
+		</div>
+		<div id="SequentialLettersDesc">
+			<p>
+				Many users tend to use easy to remember patterns, such as "abc" or "rst". So we try to avoid that and apply a penalty when we
+				discover such a pattern.
+			</p>
+		</div>
+		<div id="SequentialNumericsDesc">
+			<p>
+				Also easy to remember number combinations are evil when used in a password, because they are easy to guess. We will apply a penalty when
+				we discover patterns, such as 012 or 789.
+			</p>
+		</div>
+		<div id="KeyboardPatternsDesc">
+			<p>
+				Just typing the keys that are close to each other on the keyboard is something easy to remember but also one of the first attack
+				vectors for a password crack. We will penalize patterns from German and English keyboards.
+			</p>
+		</div>
+		<div id="RepeatedSequencesDesc">
+			<p>
+				A password becomes weak when it repeats the same patterns and phrases over and over again. For instance, "Tsae3-Tsae5" looks nice, but
+				contains too much redundancy, so we apply a penalty.
+			</p>
+			<p>
+				The penalty is only applied, when the recommended password length is not reached.
+			</p>
+		</div>
+		<div id="MirroredSequencesDesc">
+			<p>
+				Repeating a sequence in reverse order does not make the password stronger, so we make it a good practice to avoid that.
+			</p>
+			<p>
+				The penalty is only applied, when the recommended password length is not reached.
+			</p>
+		</div>
+
+	</div>
+</div> <!-- container -->
+
+<div id="statistics">
+	<!-- Piwik -->
+	<script type="text/javascript">
+		var pkBaseURL = (("https:" == document.location.protocol) ? "https://stats.yetanotherblog.de/" : "http://stats.yetanotherblog.de/");
+		document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		piwik_action_name = '';
+		piwik_idsite = 1;
+		piwik_url = pkBaseURL + "piwik.php";
+		piwik_log(piwik_action_name, piwik_idsite, piwik_url);
+	</script>
+	<!-- End Piwik Tag -->
+</div>
+
+</body>
+</html>

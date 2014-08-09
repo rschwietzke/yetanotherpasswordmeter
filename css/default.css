@@ -1,0 +1,322 @@
+*
+{
+	margin: 0px;
+	padding: 0px;	
+}
+
+.clear
+{
+	clear: both;
+}
+
+a
+{
+	text-decoration: none;
+	color: #551a8b;
+}
+
+table
+{
+	width: 100%;
+    border: none;
+	border-collapse: collapse;
+	margin: 0px auto;
+}
+	th    
+	{
+		padding: 2px;
+	    border-bottom: 2px solid #999;
+	}
+	td    
+	{
+		padding: 2px 4px;
+	    border-bottom: 1px solid #999;
+	}
+		td.type
+		{
+			text-align: center;
+		}
+		td.text
+		{
+			text-align: left;
+		}
+		td.number
+		{
+			padding-right: 10px;
+			text-align: right;
+		}
+		td.key
+		{
+			font-weight: bold;
+			text-align: right;
+		}
+
+fieldset
+{
+    border: none;
+}
+
+h1
+{
+	font-size: 42px;
+	font-style: italic;
+
+	color: #f0f0f0;
+
+	padding: 8px;
+}
+	h1 .betamarker
+	{
+		vertical-align: text-top;
+		font-size: 20px;
+		margin-left: 8px;
+	}
+
+h2
+{
+	font-family: Georgia,"Times New Roman",Times,serif;
+	font-weight: bold;
+	text-align: center;
+	border-bottom: 2px solid #999;
+	padding: 8px 8px 5px 8px;
+	margin-bottom: 10px;
+}
+
+#passwordHidden, #showPassword
+{
+	display: none;
+}
+
+.failed
+{
+	background-color: #ffAFB2;
+}
+.passed
+{
+	background-color: #AFB2FF;
+}
+.exceeded
+{
+	background-color: #AFffB2;
+}
+.lastChanged
+{
+	background-color: #ffffcf;
+}
+.status
+{
+	width: 1em;
+	text-align: center;
+}
+.bonus, .penalty, .minimum
+{
+	color: #999;
+}
+.requirement
+{
+	font-size:smaller;
+	vertical-align: text-top;
+	color: #999;
+	margin-left: 2px;
+}
+
+#complexity
+{
+}
+	#complexity.veryweak
+	{
+		color: #ef0000;
+	}
+	#complexity.weak
+	{
+		color: #DF2500;
+	}
+	#complexity.good
+	{
+		color: #DFA200;
+	}
+	#complexity.strong
+	{
+		color: #9DAF00;
+	}
+	#complexity.verystrong
+	{
+		color: #09AF00;
+	}
+
+
+/**
+ * The main container
+ */
+#container
+{
+	font-family: Georgia, Times, serif;
+	font-size: 15px;
+
+	background-color: #f9f9f9;
+	color: #555;
+}
+
+/**
+ * The header of the page
+ */
+#header
+{
+	background-color: #464646;
+
+	padding: 5px;
+	margin-bottom: 10px;
+}
+	#header h1
+	{
+		text-align: left;
+	}
+
+/**
+ * The middle content part
+ */
+#content
+{
+	clear: both;
+	padding: 5px;
+	width: 880px;
+	margin: 0px auto;
+}
+
+/**
+ * The table with the password details
+ */
+#passwordDetails
+{
+	width: 600px;
+	margin: 0px auto;
+	float: left;
+}
+	#passwordDetails table
+	{
+	}
+	#passwordDetails .password input
+	{
+		border: 1px solid #dfdfdf;
+		margin: 1px;
+		padding: 3px 4px;
+		width: 19em;
+
+		font-family: Georgia, Times, serif;
+		font-size: 15px;
+	} 
+	
+/**
+ * The table with all password details
+ */	
+#passwordCriterias
+{
+	width: 600px;
+	margin: 20px auto;
+	float: left;
+}
+	#passwordCriterias a
+	{
+		color: #555;
+	}
+	#passwordCriterias .description
+	{
+		white-space: nowrap;
+	}
+
+#sidebar
+{
+	padding: 0px;
+	float: right;
+	width: 250px;	
+	margin: 0px;
+}
+	#sidebar p
+	{
+		text-align: center;
+		line-height: 20px;
+		margin: 10px 0px;
+	}
+	
+	#sidebar #disclaimer
+	{
+		margin: 0px auto;	
+	}
+
+#blog h2 a
+{
+	color: #555;
+}	
+#blog h2 a:visited
+{
+	color: #555;
+}	
+/**
+ * A bunch of test passwords
+ */	
+.passwordList
+{
+	margin: 0px auto;
+} 
+	.passwordList p.description
+	{
+		text-align: center;
+	}
+	.passwordList p.data
+	{
+		overflow: hidden;
+	}
+		.passwordList p.data a 
+		{
+			padding: 0px 5px;
+		}
+
+#myPasswords	
+{
+	display: none;
+}
+
+#legend
+{
+	float: left;
+	width: 600px;
+	
+	margin-bottom: 10px;
+}
+
+#footer
+{
+	clear: both;
+
+	background-color: #464646;
+	color: #e0e0e0;
+	
+	font-style: italic;
+
+	padding: 5px;
+	margin-top: 10px;
+}
+	#footer p.gpl-logo img
+	{
+		float: left;
+		margin: 5px 10px;
+	}
+	#footer a
+	{
+		color: #e0e0e0;
+		text-decoration: underline;
+	}
+
+/**
+ * Descriptions, we use that indirectly and do not want to show it
+ * at all.
+ */
+#descriptions
+{
+	display: none;
+}
+
+#statistics
+{
+    display: none;
+}
