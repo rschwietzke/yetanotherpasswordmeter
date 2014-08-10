@@ -14,8 +14,6 @@ describe("Password character detection for", function() {
         it("has 0 Symbols", function() {  expect(pm.Symbols.count).toEqual(0);  });
         it("has 0 MiddleSymbols", function() {  expect(pm.MiddleSymbols.count).toEqual(0);  });
         it("has 0 MiddleNumerics", function() {  expect(pm.MiddleNumerics.count).toEqual(0);  });
-        it("has 0 SequentialLetters", function() {  expect(pm.SequentialLetters.count).toEqual(0);  });
-        it("has 0 SequentialNumerics", function() {  expect(pm.SequentialNumerics.count).toEqual(0);  });
     });
 
     describe("A", function() {

@@ -3,7 +3,7 @@
 **    Created by: Rene Schwietzke (mail@03146f06.net)
 **    Created on: 2008-12-01
 **    Last modified: 2010-05-03
-**    Version: 1.0.2
+**    Version: 2.0.0
 **
 **    License Information:
 **    -------------------------------------------------------------------------
@@ -38,7 +38,9 @@
 **             can type in long passwords, but only the first 8 characters are
 **             considered. So now, the first characters are more important
 **             and a good end cannot fix the password when it started bad.
-**    v1.2.0 : Pay more attention to length.
+**    v2.0.0 : Pay more attention to length.
+**             Tests
+**             Refactored code
 **
 **    ToDo: 
 **    -------------------------------------------------------------------------
@@ -51,7 +53,7 @@
 PasswordMeter.prototype = ( 
 {		
 	// the version of the password meter
-	version: "1.2.0",
+	version: "2.0.0",
 	
 	COMPLEXITY:
 	{
@@ -462,6 +464,130 @@ function PasswordMeter()
         }
     };
 
+    // Check for sequential alpha string patterns (forward and reverse) but only, if the string
+    // has already a length to check for, does not make sense to check the password "ab" for the
+    // sequential data "abc"
+    this.determineSequentialLetters = function (lowercasedPassword)
+    {
+        if (lowercasedPassword.length >= this.SequentialLetters.length) 
+		{
+            // because of the rotation at the end
+            var sl = this.SequentialLetters.data + this.SequentialLetters.data.substring(0, this.SequentialLetters.length);
+            
+			for (var s = 0; s < sl.length - this.SequentialLetters.length; s++) 
+			{
+				var sFwd = sl.substring(s, s + this.SequentialLetters.length);
+				var sRev = this.strReverse(sFwd);
+				
+				if (lowercasedPassword.indexOf(sFwd) != -1) 
+				{
+					this.SequentialLetters.count++;
+				}
+				if (lowercasedPassword.indexOf(sRev) != -1) 
+				{
+					this.SequentialLetters.count++;
+				}
+			}
+		}
+    }
+
+	// Check for sequential numeric string patterns (forward and reverse)
+    this.determineSequentialNumerics = function (lowercasedPassword)
+    {
+        var sn = this.SequentialNumerics.data + this.SequentialNumerics.data.substring(0, this.SequentialNumerics.length);
+
+		if (lowercasedPassword.length >= this.SequentialNumerics.length)
+		{	
+			for (var s = 0; s < sn.length - this.SequentialNumerics.length; s++) 
+			{
+				var sFwd = sn.substring(s, s + this.SequentialNumerics.length);
+				var sRev = this.strReverse(sFwd);
+				
+				if (lowercasedPassword.indexOf(sFwd) != -1) 
+				{
+					this.SequentialNumerics.count++;
+				}
+				if (lowercasedPassword.indexOf(sRev) != -1) 
+				{
+					this.SequentialNumerics.count++;
+				}
+			}
+		}    
+    }
+
+    // Check common keyboard patterns
+    this.determineKeyboardPatterns = function (lowercasedPassword)
+    {
+        var patternsMatched = new Array();
+        if (this.PasswordLength.count >= this.KeyboardPatterns.length)
+        {	
+            for (p in this.KeyboardPatterns.data) 
+            {
+                var pattern = this.KeyboardPatterns.data[p];
+                
+                for (var s = 0; s < pattern.length - this.KeyboardPatterns.length; s++) 
+                {
+                    var sFwd = pattern.substring(s, s + this.KeyboardPatterns.length);
+                    var sRev = this.strReverse(sFwd);
+                    
+                    if (lowercasedPassword.indexOf(sFwd) != -1) 
+                    {
+                        if (patternsMatched[sFwd] == undefined) 
+                        {
+                            this.KeyboardPatterns.count++;
+                            patternsMatched[sFwd] = sFwd;
+                        }
+                    }
+                    if (lowercasedPassword.indexOf(sRev) != -1) 
+                    {
+                        if (patternsMatched[sRev] == undefined) 
+                        {
+                            this.KeyboardPatterns.count++;
+                            patternsMatched[sRev] = sRev;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Try to find repeated sequences of characters.
+    this.determineRepeatedSequences = function (password)
+    {
+        if (password.count > this.RepeatedSequences.length) 
+        {
+            for (var s = 0; s < password.length - this.RepeatedSequences.length; s++) 
+            {
+                var sFwd = password.substring(s, s + this.RepeatedSequences.length);
+                
+                var result = password.indexOf(sFwd, s + this.RepeatedSequences.length);
+                if (result != -1) 
+                {
+                    this.RepeatedSequences.count++;
+                }
+            }
+        }
+    };
+    
+    // Try to find mirrored sequences of characters.
+    this.determineMirroredSequences = function (password)
+    {
+        if (password.length > this.MirroredSequences.length) 
+        {
+            for (var s = 0; s < password.length - this.MirroredSequences.length; s++) 
+            {
+                var sFwd = password.substring(s, s + this.MirroredSequences.length);
+                var sRev = this.strReverse(sFwd);
+                
+                var result = password.indexOf(sRev, s + this.MirroredSequences.length);
+                if (result != -1) 
+                {
+                    this.MirroredSequences.count++;
+                }
+            }
+        }    
+    };
+
 	// this check our password and sets all object properties accordingly
     this.checkPassword = function(password)
     {
@@ -483,137 +609,22 @@ function PasswordMeter()
 		// and Uppercase pattern matches
         this.determineCharacters(passwordArray);
 
-		// check the variance of symbols or better the redundancy
-		// makes only sense for at least two characters
-		if (passwordArray.length > 1) 
-		{
-			var uniqueCharacters = new Array();
-		    for (var a = 0; a < passwordArray.length; a++) 
-			{
-				var found = false;
-				
-				for (var b = a + 1; b < passwordArray.length; b++) 
-				{
-					if (passwordArray[a] == passwordArray[b]) 
-					{
-						found = true;
-					}
-				}
-				if (found == false)
-				{
-					uniqueCharacters.push(passwordArray[a]);
-				}
-			}
-
-			// calculate a redundancy number
-			this.Redundancy.value = passwordArray.length / uniqueCharacters.length;
-		}
-		
-        // Check for sequential alpha string patterns (forward and reverse) but only, if the string
-		// has already a length to check for, does not make sense to check the password "ab" for the
-		// sequential data "abc"
 		var lowercasedPassword = password.toLowerCase();
 
-		if (this.PasswordLength.count >= this.SequentialLetters.length) 
-		{
-			for (var s = 0; s < this.SequentialLetters.data.length - this.SequentialLetters.length; s++) 
-			{
-				var sFwd = this.SequentialLetters.data.substring(s, s + this.SequentialLetters.length);
-				var sRev = this.strReverse(sFwd);
-				
-				if (lowercasedPassword.indexOf(sFwd) != -1) 
-				{
-					this.SequentialLetters.count++;
-				}
-				if (lowercasedPassword.indexOf(sRev) != -1) 
-				{
-					this.SequentialLetters.count++;
-				}
-			}
-		}
+        // Check for sequential alpha string patterns 
+        this.determineSequentialLetters(lowercasedPassword);
 
 		// Check for sequential numeric string patterns (forward and reverse)
-		if (this.PasswordLength.count >= this.SequentialNumerics.length)
-		{	
-			for (var s = 0; s < this.SequentialNumerics.data.length - this.SequentialNumerics.length; s++) 
-			{
-				var sFwd = this.SequentialNumerics.data.substring(s, s + this.SequentialNumerics.length);
-				var sRev = this.strReverse(sFwd);
-				
-				if (lowercasedPassword.indexOf(sFwd) != -1) 
-				{
-					this.SequentialNumerics.count++;
-				}
-				if (lowercasedPassword.indexOf(sRev) != -1) 
-				{
-					this.SequentialNumerics.count++;
-				}
-			}
-		}
+        this.determineSequentialNumerics(lowercasedPassword);
 
 		// Check common keyboard patterns
-		var patternsMatched = new Array();
-		if (this.PasswordLength.count >= this.KeyboardPatterns.length)
-		{	
-			for (p in this.KeyboardPatterns.data) 
-			{
-				var pattern = this.KeyboardPatterns.data[p];
-				
-				for (var s = 0; s < pattern.length - this.KeyboardPatterns.length; s++) 
-				{
-					var sFwd = pattern.substring(s, s + this.KeyboardPatterns.length);
-					var sRev = this.strReverse(sFwd);
-					
-					if (lowercasedPassword.indexOf(sFwd) != -1) 
-					{
-						if (patternsMatched[sFwd] == undefined) 
-						{
-							this.KeyboardPatterns.count++;
-							patternsMatched[sFwd] = sFwd;
-						}
-					}
-					if (lowercasedPassword.indexOf(sRev) != -1) 
-					{
-						if (patternsMatched[sRev] == undefined) 
-						{
-							this.KeyboardPatterns.count++;
-							patternsMatched[sRev] = sRev;
-						}
-					}
-				}
-			}
-		}
-
+        this.determineKeyboardPatterns(lowercasedPassword);
+        
         // Try to find repeated sequences of characters.
-		if (this.PasswordLength.count > this.RepeatedSequences.length) 
-		{
-			for (var s = 0; s < lowercasedPassword.length - this.RepeatedSequences.length; s++) 
-			{
-				var sFwd = lowercasedPassword.substring(s, s + this.RepeatedSequences.length);
-				
-				var result = lowercasedPassword.indexOf(sFwd, s + this.RepeatedSequences.length);
-				if (result != -1) 
-				{
-					this.RepeatedSequences.count++;
-				}
-			}
-		}
+        this.determineRepeatedSequences(password);
 
         // Try to find mirrored sequences of characters.
-		if (this.PasswordLength.count > this.MirroredSequences.length) 
-		{
-			for (var s = 0; s < lowercasedPassword.length - this.MirroredSequences.length; s++) 
-			{
-				var sFwd = lowercasedPassword.substring(s, s + this.MirroredSequences.length);
-				var sRev = this.strReverse(sFwd);
-				
-				var result = lowercasedPassword.indexOf(sRev, s + this.MirroredSequences.length);
-				if (result != -1) 
-				{
-					this.MirroredSequences.count++;
-				}
-			}
-		}
+        this.determineMirroredSequences(password);
 
 		//*************************************************************************
 		//* Initial score based on length
