@@ -175,7 +175,7 @@
 		var indicator = $("#complexity");
 
 		// remove class
-		indicator.removeClass("veryweak weak good strong verystrong");
+		indicator.removeClass("veryweak weak fair good strong");
 
 		if (complexity == pm.COMPLEXITY.VERYWEAK)
 		{
@@ -187,6 +187,11 @@
 			indicator.html("Weak");
 			indicator.addClass("weak");
 		}
+		else if (complexity == pm.COMPLEXITY.FAIR)
+		{
+			indicator.html("Fair");
+			indicator.addClass("fair");
+		}
 		else if (complexity == pm.COMPLEXITY.GOOD)
 		{
 			indicator.html("Good");
@@ -196,11 +201,6 @@
 		{
 			indicator.html("Strong");
 			indicator.addClass("strong");
-		}
-		else if (complexity == pm.COMPLEXITY.VERYSTRONG)
-		{
-			indicator.html("Very Strong");
-			indicator.addClass("verystrong");
 		}
 	}
 
@@ -306,13 +306,13 @@
 					<a href="#" onclick="testPassword(this); return false;">password</a>
 					<a href="#" onclick="testPassword(this); return false;">Jane2008</a>
 					<a href="#" onclick="testPassword(this); return false;">Jane2008Jane2008</a>
-					<a href="#" onclick="testPassword(this); return false;">Foobar</a>
-					<a href="#" onclick="testPassword(this); return false;">Foobar99</a>
-					<a href="#" onclick="testPassword(this); return false;">qwertz</a>
-					<a href="#" onclick="testPassword(this); return false;">Qw3rt2</a>
+					<a href="#" onclick="testPassword(this); return false;">12aa8f92-acf7-4105-ae10-ad722d94abc7</a>
+					<a href="#" onclick="testPassword(this); return false;">W0rLd-D02014</a>
+					<a href="#" onclick="testPassword(this); return false;">A Mouse</a>
+					<a href="#" onclick="testPassword(this); return false;">ZUgataJA762552</a>
 					<a href="#" onclick="testPassword(this); return false;">71562563512</a>
-					<a href="#" onclick="testPassword(this); return false;">catecate</a>
-					<a href="#" onclick="testPassword(this); return false;">catekate</a>
+					<a href="#" onclick="testPassword(this); return false;">PaSsWoRd</a>
+					<a href="#" onclick="testPassword(this); return false;">Tributes of P.</a>
 					<a href="#" onclick="testPassword(this); return false;">foo99foo99</a>
 					<a href="#" onclick="testPassword(this); return false;">12testtest</a>
 					<a href="#" onclick="testPassword(this); return false;">wolwOlWol</a>

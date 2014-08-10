@@ -57,9 +57,9 @@ PasswordMeter.prototype = (
 	{
 	    VERYWEAK: 0,
 	    WEAK: 1,
-	    GOOD: 2,
-	    STRONG: 3,
-	    VERYSTRONG: 4
+	    FAIR: 2,
+	    GOOD: 3,
+	    STRONG: 4
 	},
 	
 	STATUS:
@@ -178,8 +178,8 @@ function PasswordMeter()
 		status : this.STATUS.FAILED,
 		rating : 0,
 		factor : 2,
-		bonus  : 20,
-		penalty: -20
+		bonus  : 0,
+		penalty: -10
 	};
 	
 	// Basic requirements are:

@@ -131,15 +131,15 @@ h2
 	{
 		color: #DF2500;
 	}
-	#complexity.good
+	#complexity.fair
 	{
 		color: #DFA200;
 	}
-	#complexity.strong
+	#complexity.good
 	{
 		color: #9DAF00;
 	}
-	#complexity.verystrong
+	#complexity.strong
 	{
 		color: #09AF00;
 	}
@@ -179,7 +179,7 @@ h2
 {
 	clear: both;
 	padding: 5px;
-	width: 880px;
+	width: 980px;
 	margin: 0px auto;
 }
 
@@ -228,7 +228,7 @@ h2
 {
 	padding: 0px;
 	float: right;
-	width: 250px;	
+	width: 350px;	
 	margin: 0px;
 }
 	#sidebar p
@@ -269,6 +269,7 @@ h2
 		.passwordList p.data a 
 		{
 			padding: 0px 5px;
+            white-space: nowrap;
 		}
 
 #myPasswords	
