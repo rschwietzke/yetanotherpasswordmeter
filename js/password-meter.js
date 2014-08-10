@@ -140,9 +140,11 @@ PasswordMeter.prototype = (
 	}
 });
 
+
+
 function PasswordMeter()
 {
-	this.Score = 
+    this.Score = 
 	{
 		count: 0,
 		adjusted: 0,
@@ -376,34 +378,14 @@ function PasswordMeter()
 		bonus  : 0,
 		penalty: -10
 	};
-	
-	// this check our password and sets all object properties accordingly
-    this.checkPassword = function(password, splitPassword)
-    {
-        // do we have data to check?
-        if (!password)
-        {
-            // no, leave
-            password = "";
-        }
 
-		if (!splitPassword)
-		{
-			splitPassword = true;
-		}
-        
+    this.determineCharacters = function(passwordArray)
+    {
         // check the password and set all values
         var nTmpAlphaUC = -1;
         var nTmpAlphaLC = -1;
         var nTmpNumber  = -1;
         var nTmpSymbol  = -1;
-
-		// how long is the password?
-        this.PasswordLength.count = password.length;
-        this.RecommendedPasswordLength.count = password.length;
-        
-        // split it, all characters are permitted so far
-        var passwordArray = password.split("");
 
         // Loop through password to check for Symbol, Numeric, Lowercase 
 		// and Uppercase pattern matches
@@ -478,6 +460,28 @@ function PasswordMeter()
                 this.Symbols.count++;
             }
         }
+    };
+
+	// this check our password and sets all object properties accordingly
+    this.checkPassword = function(password)
+    {
+        // do we have data to check?
+        if (!password)
+        {
+            // no, leave
+            password = "";
+        }
+        
+		// how long is the password?
+        this.PasswordLength.count = password.length;
+        this.RecommendedPasswordLength.count = password.length;
+        
+        // split it, all characters are permitted so far
+        var passwordArray = password.split("");
+
+        // Loop through password to check for Symbol, Numeric, Lowercase 
+		// and Uppercase pattern matches
+        this.determineCharacters(passwordArray);
 
 		// check the variance of symbols or better the redundancy
 		// makes only sense for at least two characters
@@ -919,7 +923,7 @@ function PasswordMeter()
 			}
 		}
 
-		return this.Complexity.value;		
+		return this.Complexity.value;
     };
 }
 
