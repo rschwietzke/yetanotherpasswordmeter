@@ -2,12 +2,12 @@
 **    Original File: password-meter.js
 **    Created by: Rene Schwietzke (mail@03146f06.net)
 **    Created on: 2008-12-01
-**    Last modified: 2010-05-03
+**    Last modified: 2014-08-20
 **    Version: 2.0.0
 **
 **    License Information:
 **    -------------------------------------------------------------------------
-**    Copyright (C) 2008 Rene Schwietzke
+**    Copyright (C) 2014 Rene Schwietzke
 **
 **    This program is free software; you can redistribute it and/or modify it
 **    under the terms of the GNU General Public License as published by the
@@ -169,8 +169,8 @@ function PasswordMeter()
 		status : this.STATUS.FAILED,
 		rating : 0,
 		factor : 0.5, // per character bonus
-		bonus  : 10, // minimum reached? Get a bonus.
-		penalty: -20 // if we stay under minimum, we get punished
+		bonus  : 0, // minimum reached? Get a bonus.
+		penalty: -10 // if we stay under minimum, we get punished
 	};
 	
 	// recommended password length
@@ -182,7 +182,7 @@ function PasswordMeter()
 		status : this.STATUS.FAILED,
 		rating : 0,
 		factor : 2,
-		bonus  : 0,
+		bonus  : 10,
 		penalty: -10
 	};
 	
@@ -195,13 +195,13 @@ function PasswordMeter()
 	this.BasicRequirements =
 	{
 		count  : 0, 
-		minimum: 4, // have to be matched to get the bonus
+		minimum: 5, // have to be matched to get the bonus
 		formula: "TBD", 
 		status : this.STATUS.FAILED, 
 		rating : 0, 
-		factor : 1, 
-		bonus  : 10, 
-		penalty: -10
+		factor : 2, 
+		bonus  : 0, 
+		penalty: 0
 	};
 	
 	// how much redundancy is permitted, if the password is
@@ -226,7 +226,7 @@ function PasswordMeter()
 		rating : 0,
 		factor : 0,
 		bonus  : 10,
-		penalty: -10
+		penalty: 0
 	};
 	
 	// number of lowercase letters, such as a-z	
@@ -239,7 +239,7 @@ function PasswordMeter()
 		rating : 0,
 		factor : 0,
 		bonus  : 10,
-		penalty: -10
+		penalty: 0
 	};
 	
 	// number of numeric characters
@@ -252,7 +252,7 @@ function PasswordMeter()
 		rating : 0,
 		factor : 0,
 		bonus  : 10,
-		penalty: -10
+		penalty: 0
 	};
 	
 	// number of symbol characters
@@ -265,7 +265,7 @@ function PasswordMeter()
 		rating : 0,
 		factor : 0,
 		bonus  : 10,
-		penalty: -10
+		penalty: 0
 	};
 	
 	// number of dedicated symbols in the middle
@@ -278,7 +278,7 @@ function PasswordMeter()
 		rating : 0,
 		factor : 0,
 		bonus  : 10,
-		penalty: -10
+		penalty: 0
 	};
 	
 	// number of dedicated numbers in the middle
@@ -291,7 +291,7 @@ function PasswordMeter()
 		rating : 0,
 		factor : 0,
 		bonus  : 10,
-		penalty: -10
+		penalty: 0
 	};
 	
 	// how many sequential characters should be checked
@@ -308,7 +308,7 @@ function PasswordMeter()
 		rating: 0,
 		factor: -1,
 		bonus: 0,
-		penalty: -10
+		penalty: 0
 	};
 	
 	// how many sequential characters should be checked
@@ -325,7 +325,7 @@ function PasswordMeter()
 		rating: 0,
 		factor: -1,
 		bonus: 0,
-		penalty: -10
+		penalty: 0
 	};
 
 	// keyboard patterns to check, typical sequences from your
@@ -362,7 +362,7 @@ function PasswordMeter()
 		formula: "TBD",
 		status : this.STATUS.FAILED,
 		rating : 0,
-		factor : 0,
+		factor : 1,
 		bonus  : 0,
 		penalty: -10
 	};
@@ -378,7 +378,7 @@ function PasswordMeter()
 		rating : 0,
 		factor : 0,
 		bonus  : 0,
-		penalty: -10
+		penalty: 0
 	};
 
     this.determineCharacters = function(passwordArray)
@@ -629,7 +629,7 @@ function PasswordMeter()
 		//*************************************************************************
 		//* Initial score based on length
 		//*************************************************************************
-        this.Score.count = this.PasswordLength.count * this.PasswordLength.factor;
+        this.Score.count = 0;
 		
 		//*************************************************************************
 		//* PasswordLength
@@ -645,6 +645,7 @@ function PasswordMeter()
 			this.PasswordLength.rating += this.PasswordLength.bonus;
 		}
 		this.Score.count += this.PasswordLength.rating;
+        
 
 		//*************************************************************************
 		//* RecommendedPasswordLength
@@ -845,7 +846,7 @@ function PasswordMeter()
 		}
 		else
 		{
-			this.BasicRequirements.rating = this.BasicRequirements.penalty;				
+			this.BasicRequirements.rating = this.BasicRequirements.penalty;	
 		}
 		this.Score.count += this.BasicRequirements.rating;
 
