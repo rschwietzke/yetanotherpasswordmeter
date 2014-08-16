@@ -333,15 +333,15 @@ function PasswordMeter()
 	this.KeyboardPatterns =
 	{
 		// german and english keyboard text
-		data: [	"qwertzuiop", "asdfghjkl", "yxcvbnm", "!\"§$%&/()=", // de
+		data: [	"qwertzuiopasdfghjklyxcvbnm", "!\"§$%&/()=", // de
 				"1234567890", // de numbers
 				"qaywsxedcrfvtgbzhnujmik,ol.pö-üä+#", // de up-down
 			   
-			    "qwertyuiop", "asdfghjkl", "zyxcvbnm", "!@#$%^&*()_", // en
+			    "qwertyuiopasdfghjklzyxcvbnm", "!@#$%^&*()_", // en
 				"1234567890", // en numbers
 		        "qazwsxedcrfvtgbyhnujmik,ol.p;/[']\\" // en up-down
 		],
-		length: 4, // how long is the pattern to check and blame for?
+		length: 3, // how long is the pattern to check and blame for?
 		
 		count: 0, // how much of these pattern can be found
 		
@@ -519,13 +519,13 @@ function PasswordMeter()
     this.determineKeyboardPatterns = function (lowercasedPassword)
     {
         var patternsMatched = new Array();
-        if (this.PasswordLength.count >= this.KeyboardPatterns.length)
+        if (lowercasedPassword.length >= this.KeyboardPatterns.length)
         {	
             for (p in this.KeyboardPatterns.data) 
             {
                 var pattern = this.KeyboardPatterns.data[p];
                 
-                for (var s = 0; s < pattern.length - this.KeyboardPatterns.length; s++) 
+                for (var s = 0; s <= pattern.length - this.KeyboardPatterns.length; s++) 
                 {
                     var sFwd = pattern.substring(s, s + this.KeyboardPatterns.length);
                     var sRev = this.strReverse(sFwd);
