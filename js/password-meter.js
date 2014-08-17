@@ -353,6 +353,24 @@ function PasswordMeter()
 		penalty: -10
 	};
 
+    ASCII: " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
+
+    // just to avoid to have plain years in the password
+	this.YearPatterns =
+	{
+		data: ["1[89][0-9][0-9]", "2[01][0-9][0-9]"],
+		length: 4, // how long is the pattern to check and blame for?
+		
+		count: 0, // how much of these pattern can be found
+		
+		formula: "TBD",
+		status: this.STATUS.FAILED,
+		rating: 0,
+		factor: -1, // each occurence is punished with that factor
+		bonus: 0,
+		penalty: -10
+	};
+
 	// check for repeated sequences, like in catcat
 	this.RepeatedSequences = 
 	{
@@ -564,8 +582,6 @@ function PasswordMeter()
                 if (result != -1) 
                 {
                     this.RepeatedSequences.count++;
-                    console.log(password + ": " + sFwd);
-
                 }
             }
         }
@@ -576,14 +592,24 @@ function PasswordMeter()
     {
         if (password.length > this.MirroredSequences.length) 
         {
+            var patternsMatched = new Array();
+            
             for (var s = 0; s <= password.length - this.MirroredSequences.length; s++) 
             {
                 var sFwd = password.substring(s, s + this.MirroredSequences.length);
                 var sRev = this.strReverse(sFwd);
                 
+                if (patternsMatched[sFwd] != undefined || patternsMatched[sRev] != undefined)
+                {
+                    // saw it already, do not repeat
+                    continue;
+                }
+                
                 var result = password.indexOf(sRev, s + this.MirroredSequences.length);
                 if (result != -1) 
                 {
+                    patternsMatched[sFwd] = sFwd;
+                    patternsMatched[sRev] = sRev;
                     this.MirroredSequences.count++;
                 }
             }
