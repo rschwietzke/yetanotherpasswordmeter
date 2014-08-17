@@ -121,6 +121,7 @@
 		pm.checkPassword(password);
 
 		$("#score").html(pm.int2str(pm.Score.adjusted) + "%");
+		$("#entropy").html(pm.int2str(pm.Entropy.count));
 		$("#originalscore").html(pm.float2str(pm.Score.count));
 		$("#beforeRedundancyScore").html(pm.float2str(pm.Score.beforeRedundancy));
 		$("#redundancy").html(pm.float2str(pm.Redundancy.value));
@@ -375,6 +376,10 @@
 				<tr>
 					<td class="key">Redundancy:</td>
 					<td><span id="redundancy">0</span></td>
+				</tr>
+				<tr>
+					<td class="key">Entropy:</td>
+					<td><span id="entropy">0</span></td>
 				</tr>
 				<tr>
 					<td class="key">Original Score:</td>
