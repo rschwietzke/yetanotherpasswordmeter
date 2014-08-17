@@ -182,8 +182,8 @@ function PasswordMeter()
 		status : this.STATUS.FAILED,
 		rating : 0,
 		factor : 0.5,
-		bonus  : 10, // minimum reached? Get a bonus.
-		penalty: -10 // if we stay under minimum, we get punished
+		bonus  : 0, // minimum reached? Get a bonus.
+		penalty: 0 // if we stay under minimum, we get punished
 	};
 	
 	// recommended password length
@@ -208,12 +208,12 @@ function PasswordMeter()
 	this.BasicRequirements =
 	{
 		count  : 0, 
-		minimum: 5, // have to be matched to get the bonus
+		minimum: 4, // have to be matched to get the bonus
 		formula: "TBD", 
 		status : this.STATUS.FAILED, 
 		rating : 0, 
 		factor : 2, 
-		bonus  : 0, 
+		bonus  : 10, 
 		penalty: 0
 	};
 	
@@ -287,6 +287,7 @@ function PasswordMeter()
 	// number of dedicated symbols in the middle
 	this.MiddleSymbols =
 	{
+        data   : ["^.*[0-9a-zA-Z].*[^0-9a-zA-Z]+.*[0-9a-zA-Z].*$"],
 		count  : 0,
 		minimum: 1,
 		formula: "TBD",
@@ -300,6 +301,7 @@ function PasswordMeter()
 	// number of dedicated numbers in the middle
 	this.MiddleNumerics = 
 	{
+        data   : ["^.*[^0-9].*[0-9]+.*[^0-9].*$"],
 		count  : 0,
 		minimum: 1,
 		formula: "TBD",
@@ -324,7 +326,7 @@ function PasswordMeter()
 		rating: 0,
 		factor: -1,
 		bonus: 0,
-		penalty: 0
+		penalty: -10
 	};
 	
 	// how many sequential characters should be checked
@@ -341,7 +343,7 @@ function PasswordMeter()
 		rating: 0,
 		factor: -1,
 		bonus: 0,
-		penalty: 0
+		penalty: -10
 	};
 
 	// keyboard patterns to check, typical sequences from your
@@ -412,7 +414,7 @@ function PasswordMeter()
 		rating : 0,
 		factor : 0,
 		bonus  : 0,
-		penalty: 0
+		penalty: -10
 	};
 
 
@@ -528,10 +530,6 @@ function PasswordMeter()
 			// check numeric
             else if (passwordArray[a].match(/[0-9]/g)) 
             { 
-                if (a > 0 && a < (passwordArray.length - 1)) 
-				{ 
-					this.MiddleNumerics.count++; 
-				}
                 if (nTmpNumber != -1) 
 				{ 
 					if ((nTmpNumber + 1) == a) 
@@ -546,10 +544,6 @@ function PasswordMeter()
 			// check all extra characters
             else if (passwordArray[a].match(new RegExp(/[^a-zA-Z0-9]/g))) 
             { 
-                if (a > 0 && a < (passwordArray.length - 1)) 
-				{ 
-					this.MiddleSymbols.count++; 
-				}
                 if (nTmpSymbol != -1) 
 				{ 
 					if ((nTmpSymbol + 1) == a) 
@@ -712,8 +706,44 @@ function PasswordMeter()
             }
         }
         return this.YearPatterns.count;
-    }
+    };
 
+    // Make sure the numbers are not just at the end
+    this.determineMiddleNumerics = function (password)
+    {
+        for (p in this.MiddleNumerics.data) 
+        {
+            var pattern = this.MiddleNumerics.data[p];
+            var regexp = new RegExp(pattern, "g");
+            
+            if (regexp.exec(password)) 
+            {
+                this.MiddleNumerics.count++;
+                break; // count only once
+            }
+        }
+
+        return this.MiddleNumerics.count;
+    };
+
+    // Make sure the numbers are not just at the end
+    this.determineMiddleSymbols = function (password)
+    {
+        for (p in this.MiddleSymbols.data) 
+        {
+            var pattern = this.MiddleSymbols.data[p];
+            var regexp = new RegExp(pattern, "g");
+            
+            if (regexp.exec(password)) 
+            {
+                this.MiddleSymbols.count++;
+                break; // count only once
+            }
+        }
+
+        return this.MiddleSymbols.count;
+    };
+    
     // Try to find repeated sequences of characters.
     this.determineRepeatedSequences = function (password)
     {
@@ -807,6 +837,12 @@ function PasswordMeter()
         
         // find year patterns
         this.determineYearPatterns(password);
+        
+        // find numbers in the middle
+        this.determineMiddleNumerics(password);
+
+        // find numbers in the middle
+        this.determineMiddleSymbols(password);
 
 		//*************************************************************************
 		//* Initial score based on length
