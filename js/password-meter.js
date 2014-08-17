@@ -554,9 +554,9 @@ function PasswordMeter()
     // Try to find repeated sequences of characters.
     this.determineRepeatedSequences = function (password)
     {
-        if (password.count > this.RepeatedSequences.length) 
+        if (password.length > this.RepeatedSequences.length) 
         {
-            for (var s = 0; s < password.length - this.RepeatedSequences.length; s++) 
+            for (var s = 0; s <= password.length - this.RepeatedSequences.length; s++) 
             {
                 var sFwd = password.substring(s, s + this.RepeatedSequences.length);
                 
@@ -564,6 +564,8 @@ function PasswordMeter()
                 if (result != -1) 
                 {
                     this.RepeatedSequences.count++;
+                    console.log(password + ": " + sFwd);
+
                 }
             }
         }
@@ -574,7 +576,7 @@ function PasswordMeter()
     {
         if (password.length > this.MirroredSequences.length) 
         {
-            for (var s = 0; s < password.length - this.MirroredSequences.length; s++) 
+            for (var s = 0; s <= password.length - this.MirroredSequences.length; s++) 
             {
                 var sFwd = password.substring(s, s + this.MirroredSequences.length);
                 var sRev = this.strReverse(sFwd);
