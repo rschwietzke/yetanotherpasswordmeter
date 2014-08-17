@@ -222,11 +222,14 @@ function PasswordMeter()
 	// number is not exceeded (meaning redundancy < this number)
 	this.Redundancy =
 	{
-		value    : 1, // 1 means, not double characters, default to start
-		permitted: 2, // 2 means, in average every character can occur twice
-		formula  : "TBD",
-		status   : this.STATUS.FAILED,
-		rating   : 0
+		count  : 1, // 1 means, not double characters, default to start
+		maximum: 2.0, // 2 means, in average every character can occur twice
+		formula: "TBD",
+		status : this.STATUS.FAILED,
+		rating : 0,
+		factor : -5, 
+		bonus  : 0,
+		penalty: 0
 	};
 	
 	// number of uppercase letters, such as A-Z	
@@ -561,6 +564,50 @@ function PasswordMeter()
         }
     };
 
+    // determine redundancy
+    // check the variance of symbols or better the redundancy
+    // makes only sense for at least two characters
+    this.determineRedundancy = function (passwordArray) 
+    {
+		if (passwordArray.length > 1) 
+        {
+			var uniqueCharacters = new Array();
+		    for (var a = 0; a < passwordArray.length; a++) 
+            {
+				var found = false;
+				
+				for (var b = a + 1; b < passwordArray.length; b++) 
+                {
+					if (passwordArray[a] == passwordArray[b]) 
+                    {
+						found = true;
+					}
+				}
+				if (found == false)	
+                {
+					uniqueCharacters.push(passwordArray[a]);
+				}
+			}
+
+			// calculate a redundancy number
+			this.Redundancy.count = (passwordArray.length / uniqueCharacters.length).toFixed(1);
+            
+        }
+        else
+        {
+            if (passwordArray.length == 1)
+            {
+                this.Redundancy.count = 1.0;
+            }
+            else
+            {
+                this.Redundancy.count = 0.0;
+            }
+        }
+        this.Redundancy.count = Number(this.Redundancy.count);
+        return this.Redundancy.count;
+    };
+
     // Check for sequential alpha string patterns (forward and reverse) but only, if the string
     // has already a length to check for, does not make sense to check the password "ab" for the
     // sequential data "abc"
@@ -715,6 +762,9 @@ function PasswordMeter()
         // Loop through password to check for Symbol, Numeric, Lowercase 
 		// and Uppercase pattern matches
         this.determineCharacters(passwordArray);
+
+        // count variance
+        this.determineRedundancy(passwordArray);
 
 		var lowercasedPassword = password.toLowerCase();
 
@@ -1006,20 +1056,15 @@ function PasswordMeter()
 		// save value before redundancy
 		this.Score.beforeRedundancy = this.Score.count;
 
-		// apply the redundancy
-		// is the password length requirement fulfilled?
-		if (this.RecommendedPasswordLength.status != this.STATUS.EXCEEDED) 
-		{
-            // consider redudancy only if over start value
-            if (this.Redundancy.value > this.Redundancy.permitted)
+        // consider redundancy only if over start value
+        if (this.Redundancy.count > this.Redundancy.maximum)
+        {
+            // full penalty, because password is not long enough, only for a positive score
+            if (this.Score.count > 0) 
             {
-                // full penalty, because password is not long enough, only for a positive score
-                if (this.Score.count > 0) 
-                {
-                    this.Score.count = this.Score.count * (1 / this.Redundancy.value);
-                }
+                this.Score.count = this.Score.count + (this.Redundancy.count * this.Redundancy.factor);
             }
-		}
+        }
 
 		// level it out
 		if (this.Score.count > 100) 
