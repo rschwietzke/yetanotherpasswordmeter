@@ -377,12 +377,12 @@ function PasswordMeter()
 		data: ["1[89][0-9][0-9]", "2[01][0-9][0-9]"],
 		length: 4, // how long is the pattern to check and blame for?
 		
-		count: 0, // how much of these pattern can be found
+		count: 0, // how much of these pattern were found
 		
 		formula: "TBD",
 		status: this.STATUS.FAILED,
 		rating: 0,
-		factor: -1, // each occurence is punished with that factor
+		factor: -5, // each occurence is punished with that factor
 		bonus: 0,
 		penalty: -10
 	};
@@ -695,6 +695,25 @@ function PasswordMeter()
         }
     }
 
+    // Check that we find nothing that looks like a year
+    this.determineYearPatterns = function (password)
+    {
+        if (password.length >= this.YearPatterns.length)
+        {	
+            for (p in this.YearPatterns.data) 
+            {
+                var pattern = this.YearPatterns.data[p];
+                var regexp = new RegExp(pattern, "g");
+                
+                while (regexp.exec(password)) 
+                {
+                    this.YearPatterns.count++;
+                }
+            }
+        }
+        return this.YearPatterns.count;
+    }
+
     // Try to find repeated sequences of characters.
     this.determineRepeatedSequences = function (password)
     {
@@ -785,6 +804,9 @@ function PasswordMeter()
         
         // determine the entropy
         this.calculateEntropy(password);
+        
+        // find year patterns
+        this.determineYearPatterns(password);
 
 		//*************************************************************************
 		//* Initial score based on length
@@ -952,6 +974,21 @@ function PasswordMeter()
 		this.Score.count += this.KeyboardPatterns.rating;
 
 		//*************************************************************************
+		//* YearPatterns
+		//* We do not want to have common years in the password
+		//*************************************************************************
+		if (this.YearPatterns.count == 0) 
+		{	
+			this.YearPatterns.rating = this.YearPatterns.bonus;
+		}
+		else
+		{
+			this.YearPatterns.rating = this.YearPatterns.penalty + (this.YearPatterns.count * this.YearPatterns.factor);
+		}
+		this.Score.count += this.YearPatterns.rating;
+        
+
+		//*************************************************************************
 		//* Count our BasicRequirements and set the status
 		//*************************************************************************
 		this.BasicRequirements.count = 0;
@@ -1017,6 +1054,7 @@ function PasswordMeter()
 		this.SequentialLetters.status = this.determineBinaryStatus(this.SequentialLetters.count);
 		this.SequentialNumerics.status = this.determineBinaryStatus(this.SequentialNumerics.count);
 		this.KeyboardPatterns.status = this.determineBinaryStatus(this.KeyboardPatterns.count);
+		this.YearPatterns.status = this.determineBinaryStatus(this.YearPatterns.count);
 
 		this.RepeatedSequences.status = this.determineBinaryStatus(this.RepeatedSequences.count);
 		this.MirroredSequences.status = this.determineBinaryStatus(this.MirroredSequences.count);

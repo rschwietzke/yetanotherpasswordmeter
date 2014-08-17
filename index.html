@@ -171,6 +171,10 @@
  		// assign MirroredSequences information
 		assignData("#MirroredSequences", pm.MirroredSequences, pm);
 
+ 		// assign YearPatterns information
+		assignData("#YearPatterns", pm.YearPatterns, pm);
+
+
 		// set complexity
 		var complexity = pm.Complexity.value;
 		var indicator = $("#complexity");
@@ -548,7 +552,17 @@
 					<td class="penalty number">&nbsp;</td>
 					<td class="rating number">&nbsp;</td>
 				</tr>
-			</table>
+				<tr id="YearPatterns">
+					<td class="status">&nbsp;</td>
+					<td class="type">B</td>
+					<td class="description"><a href="#" title="Found Year Patterns" rel="#YearPatternsDesc">Year patterns found</a></td>
+					<td class="minimum number">&nbsp;</td>
+					<td class="count number">&nbsp;</td>
+					<td class="bonus number">&nbsp;</td>
+					<td class="penalty number">&nbsp;</td>
+					<td class="rating number">&nbsp;</td>
+				</tr>			
+            </table>
 		</div>
 
 		<div id="legend">
@@ -700,7 +714,15 @@
 				The penalty is only applied, when the recommended password length is not reached.
 			</p>
 		</div>
-
+		<div id="YearPatternsDesc">
+			<p>
+				Including years such as your birthday or common events from the near past or future (e.g. 1910, 1972, 2042) just make it
+                easier to guess or break the password or password hash.
+			</p>
+			<p>
+				The penalty is always applied.
+			</p>
+		</div>
 	</div>
 </div> <!-- container -->
 
