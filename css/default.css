@@ -293,14 +293,14 @@ h2
 
 #footer
 {
+	padding: 10px 10px;
 	clear: both;
+	text-align: center;
 
 	background-color: #464646;
 	color: #e0e0e0;
 
 	font-style: italic;
-
-	padding: 5px;
 	margin-top: 10px;
 }
 	#footer p.gpl-logo img
