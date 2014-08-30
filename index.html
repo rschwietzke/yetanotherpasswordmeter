@@ -9,6 +9,7 @@
 
 	<script type="text/javascript" src="/js/jquery-1.11.1.min.js"><!-- nothing --></script>
 	<script type="text/javascript" src="/js/jquery-ui-1.11.1.custom.min.js"><!-- nothing --></script>
+	<script type="text/javascript" src="/js/jquery.hoverIntent-1.8.0.min.js"><!-- nothing --></script>
 	<script type="text/javascript" src="/js/jquery.cluetip-1.2.10.min.js"><!-- nothing --></script>
 	<script type="text/javascript" src="/js/password-meter.js"><!-- nothing --></script>
 
@@ -34,7 +35,7 @@
 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
--->
+	-->
 
 <script type="text/javascript">
 	// <![CDATA[
@@ -293,13 +294,13 @@
 			$("#passwordCriterias td.description a").cluetip(
 				{
 					fx: {open: "fadeIn"},
+					width: 350,
 					local: true,
 					hideLocal: true,
 					attribute:  'rel',    // the attribute to be used for fetching the clueTip's body content
 				    titleAttribute: 'title',  // the attribute to be used for fetching the clueTip's title
-					positionBy: 'auto' // next to the mouse
-				    // splitTitle: '|' // use the invoking element's title attribute to populate the clueTip...
-				                    // ...and split the contents into separate divs where there is a "|"
+					positionBy: 'auto', // next to the mouse
+					cluetipClass: 'yapm'
 				});
 
 			// set version
