@@ -327,3 +327,69 @@ h2
 {
     display: none;
 }
+
+/***************************************
+ cluetipClass: 'yapm'
+-------------------------------------- */
+.cluetip-yapm,
+.cluetip-yapm .cluetip-outer {
+	background-color: #f9f9f9;
+}
+.cluetip-yapm .ui-cluetip-header {
+	background-color: #f0f0f0;
+}
+
+.cluetip-yapm {
+
+	border: 1px solid #ccc;
+}
+
+.cluetip-yapm .cluetip-outer {
+
+}
+
+.cluetip-yapm  .cluetip-arrows {
+border-color: #ccc;
+}
+
+/* need to be more specific here to override ThemeRoller defaults */
+div.cluetip-yapm  .cluetip-arrows {
+font-size: 0;
+line-height: 0%;
+width: 0;
+height: 0;
+border-style: solid;
+background: transparent none;
+}
+div.clue-right-rounded .cluetip-arrows {
+border-width: 11px 11px 11px 0;
+border-top-color: transparent;
+border-bottom-color: transparent;
+border-left-color: transparent;
+}
+div.clue-left-rounded .cluetip-arrows {
+left: 100%;
+margin-right: -11px;
+border-width: 11px 0 11px 11px;
+border-top-color: transparent;
+border-right-color: transparent;
+border-bottom-color: transparent;
+
+}
+div.clue-top-rounded .cluetip-arrows {
+top: 100%;
+left: 50%;
+border-width: 11px 11px 0 11px;
+border-right-color: transparent;
+border-bottom-color: transparent;
+border-left-color: transparent;
+}
+.clue-bottom-rounded .cluetip-arrows {
+top: -11px;
+left: 50%;
+border-width: 0 11px 11px 11px;
+border-top-color: transparent;
+border-right-color: transparent;
+border-left-color: transparent;
+
+}
