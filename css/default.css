@@ -29,9 +29,12 @@ table
 	}
 	td
 	{
-		padding: 2px 4px;
+		padding: 4px 4px;
 	    border-bottom: 1px solid #999;
 	}
+        td.description {
+            padding-left: 10px;
+        }
 		td.type
 		{
 			text-align: center;
@@ -290,6 +293,9 @@ h2
 
 	margin-bottom: 10px;
 }
+    #legend h2 {
+        margin-bottom: 0;
+    }
 
 #footer
 {

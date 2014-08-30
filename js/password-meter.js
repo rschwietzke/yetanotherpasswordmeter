@@ -173,6 +173,19 @@ function PasswordMeter()
 		penalty: -10 // if we stay under minimum, we get punished
 	};
 
+	// recommended password length
+	this.RecommendedPasswordLength =
+	{
+		count  : 0,
+		minimum: 12,
+		formula: "TBD",
+		status : this.STATUS.FAILED,
+		rating : 0,
+		factor : 2,
+		bonus  : 0,
+		penalty: -10
+	};
+
 	// the entropy of the password
 	this.Entropy =
 	{
@@ -184,19 +197,6 @@ function PasswordMeter()
 		factor : 0.5,
 		bonus  : 0, // minimum reached? Get a bonus.
 		penalty: 0 // if we stay under minimum, we get punished
-	};
-
-	// recommended password length
-	this.RecommendedPasswordLength =
-	{
-		count  : 0,
-		minimum: 12,
-		formula: "TBD",
-		status : this.STATUS.FAILED,
-		rating : 0,
-		factor : 2,
-		bonus  : 10,
-		penalty: -10
 	};
 
 	// Basic requirements are:

@@ -76,7 +76,7 @@
 		var old = element.data("status");
 		if (old != status)
 		{
-			row.effect("highlight", {color: "#ffff00"}, 800).addClass("lastChanged");
+			row.effect("highlight", {color: "#ffff00"}, 500).addClass("lastChanged");
 			element.data("status", status);
 		}
 	}
@@ -597,36 +597,36 @@
 			<table>
 				<tr>
 					<td class="status failed">&nbsp;</td>
-					<td class="desription">This criteria failed. You should change your password to match it.</td>
+					<td class="description">This criteria failed. You should change your password to match it.</td>
 				</tr>
 				<tr>
 					<td class="status passed">&nbsp;</td>
-					<td class="desription">Your password passed this criteria.</td></tr>
+					<td class="description">Your password passed this criteria.</td></tr>
 				<tr>
 					<td class="status exceeded">&nbsp;</td>
-					<td class="desription">The criteria is exceeded. Your password does well in this category.</td>
+					<td class="description">The criteria is exceeded. Your password does well in this category.</td>
 				</tr>
 				<tr>
 					<td class="status lastChanged">&nbsp;</td>
-					<td class="desription">
+					<td class="description">
 						This color marks the recent criteria changes to inform you about the influence of your last
 						modifications.
 					</td>
 				</tr>
 				<tr>
 					<td class="status">T</td>
-					<td class="desription">This is a triple state criteria. It has the states Failed, Passed, and Exceeded.</td>
+					<td class="description">This is a triple state criteria. It has the states Failed, Passed, and Exceeded.</td>
 				</tr>
 				<tr>
 					<td class="status">B</td>
-					<td class="desription">
+					<td class="description">
 						This is a binary state criteria. It has the states Failed and Passed. So it can be
 						only violated.
 					</td>
 				</tr>
 				<tr>
 					<td class="status">*</td>
-					<td class="desription">
+					<td class="description">
 						This is one of the basic requirements.
 					</td>
 				</tr>
