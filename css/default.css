@@ -1,7 +1,7 @@
 *
 {
 	margin: 0px;
-	padding: 0px;	
+	padding: 0px;
 }
 
 .clear
@@ -22,12 +22,12 @@ table
 	border-collapse: collapse;
 	margin: 0px auto;
 }
-	th    
+	th
 	{
 		padding: 2px;
 	    border-bottom: 2px solid #999;
 	}
-	td    
+	td
 	{
 		padding: 2px 4px;
 	    border-bottom: 1px solid #999;
@@ -204,11 +204,11 @@ h2
 
 		font-family: Georgia, Times, serif;
 		font-size: 15px;
-	} 
-	
+	}
+
 /**
  * The table with all password details
- */	
+ */
 #passwordCriterias
 {
 	width: 600px;
@@ -228,36 +228,41 @@ h2
 {
 	padding: 0px;
 	float: right;
-	width: 350px;	
+	width: 350px;
 	margin: 0px;
 }
 	#sidebar p
 	{
-		text-align: center;
+		text-align: left;
 		line-height: 20px;
 		margin: 10px 0px;
 	}
-	
+
 	#sidebar #disclaimer
 	{
-		margin: 0px auto;	
+		margin: 0px auto;
+	}
+
+	#sidebar #license
+	{
+		margin: 0px auto;
 	}
 
 #blog h2 a
 {
 	color: #555;
-}	
+}
 #blog h2 a:visited
 {
 	color: #555;
-}	
+}
 /**
  * A bunch of test passwords
- */	
+ */
 .passwordList
 {
 	margin: 0px auto;
-} 
+}
 	.passwordList p.description
 	{
 		text-align: center;
@@ -265,14 +270,15 @@ h2
 	.passwordList p.data
 	{
 		overflow: hidden;
+		text-align: center !important;
 	}
-		.passwordList p.data a 
+		.passwordList p.data a
 		{
 			padding: 0px 5px;
             white-space: nowrap;
 		}
 
-#myPasswords	
+#myPasswords
 {
 	display: none;
 }
@@ -281,7 +287,7 @@ h2
 {
 	float: left;
 	width: 600px;
-	
+
 	margin-bottom: 10px;
 }
 
@@ -291,7 +297,7 @@ h2
 
 	background-color: #464646;
 	color: #e0e0e0;
-	
+
 	font-style: italic;
 
 	padding: 5px;

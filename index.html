@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Yet Another Password Meter - Test Your Passwords</title>
@@ -12,6 +12,30 @@
 	<script type="text/javascript" src="/js/jquery-ui-personalized-1.5.3.js"><!-- nothing --></script>
 	<script type="text/javascript" src="/js/jquery.dimensions-1.2.js"><!-- nothing --></script>
 	<script type="text/javascript" src="/js/jquery.cluetip.js"><!-- nothing --></script>
+
+	<!--
+	The MIT License (MIT)
+
+	Copyright (c) 2014 René Schwietzke
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be included in
+	all copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	THE SOFTWARE.
+-->
 
 <script type="text/javascript">
 	// <![CDATA[
@@ -290,7 +314,7 @@
 <body>
 <div id="container">
 	<div id="header">
-		<h1>Yet Another Password Meter<span class="betamarker">Beta</span></h1>
+		<h1>Yet Another Password Meter<span class="betamarker">2.0</span></h1>
 	</div>
 
 	<div id="content">
@@ -306,32 +330,22 @@
 
 			<div id="testPasswords" class="passwordList">
 				<h2>Test Passwords</h2>
-				<p class="description">Feel free to try these password to learn more about the scoring.</p>
+
+				<p class="description">
+					Feel free to try these password to learn more about the scoring.
+				</p>
+
 				<p class="data">
-					<a href="#" onclick="testPassword(this); return false;">password</a>
-					<a href="#" onclick="testPassword(this); return false;">Jane2008</a>
 					<a href="#" onclick="testPassword(this); return false;">Jane2008Jane2008</a>
 					<a href="#" onclick="testPassword(this); return false;">12aa8f92-acf7-4105-ae10-ad722d94abc7</a>
 					<a href="#" onclick="testPassword(this); return false;">W0rLd-D02014</a>
-					<a href="#" onclick="testPassword(this); return false;">A Mouse</a>
-					<a href="#" onclick="testPassword(this); return false;">ZUgataJA762552</a>
-					<a href="#" onclick="testPassword(this); return false;">71562563512</a>
-					<a href="#" onclick="testPassword(this); return false;">PaSsWoRd</a>
 					<a href="#" onclick="testPassword(this); return false;">Tributes of P.</a>
-					<a href="#" onclick="testPassword(this); return false;">foo99foo99</a>
-					<a href="#" onclick="testPassword(this); return false;">12testtest</a>
-					<a href="#" onclick="testPassword(this); return false;">wolwOlWol</a>
-					<a href="#" onclick="testPassword(this); return false;">Foooob</a>
-					<a href="#" onclick="testPassword(this); return false;">QtessetZ</a>
+					<a href="#" onclick="testPassword(this); return false;">password</a>
+					<a href="#" onclick="testPassword(this); return false;">Ma, I can write sentences!</a>
 				</p>
-			</div>
 
-			<div id="blog">
-				<h2><a href="http://blog.yetanotherpasswordmeter.com/">Blog</a></h2>
-				<p>
-					Of course, we also have a <a href="http://blog.yetanotherpasswordmeter.com/">blog</a>.
-					We want to keep you informed about all the things that are going on. Additionally
-					we like to hear your feedback. Feel free to post your suggestions.
+				<p class="data">
+					<a href="#" onclick="testPassword(this); return false;">password</a>
 				</p>
 			</div>
 
@@ -343,9 +357,21 @@
 					are just recommendations and do not guarantee that your password is really safe. We try to
 					support you in finding a password that is suitable but we do not guarantee that it is perfect.
 				</p>
+				<p>Did we mention that you shouldn't test your real passwords here rather look-alikes? Download this application
+				from GitHub and run it locally, check the source code first, and then you can test your real passwords... or rather not.</p>
+			</div>
+
+			<div id="license">
+				<h2>License</h2>
 				<p>
-					The <a href="/download/yapm-src.zip" title="The source code">full source code</a> of this
-					application is available under CC-GPL-2.0. Feel free to examine, modify, and redistribute it.
+					You find the source code on <a href="https://github.com/rschwietzke/yetanotherpasswordmeter">GitHub</a>.
+					Feel free to fork it. Feel free to share what you have changed.
+					The source code is available under the very liberal
+					<a href="http://opensource.org/licenses/MIT" title="Link to license text.">MIT-License</a>.
+				</p>
+				<p>
+					The text, design, and content is licensed and available under
+					<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons by Attribution license 4.0</a>
 				</p>
 			</div>
 
@@ -561,7 +587,7 @@
 					<td class="bonus number">&nbsp;</td>
 					<td class="penalty number">&nbsp;</td>
 					<td class="rating number">&nbsp;</td>
-				</tr>			
+				</tr>
             </table>
 		</div>
 
@@ -716,7 +742,7 @@
 		</div>
 		<div id="YearPatternsDesc">
 			<p>
-				Including years such as your birthday or common events from the near past or future (e.g. 1910, 1972, 2042) just make it
+				Including years such as your birthday or common events from the near past or future (e.g. 1910, 1972, 2042) just makes it
                 easier to guess or break the password or password hash.
 			</p>
 			<p>
@@ -725,21 +751,6 @@
 		</div>
 	</div>
 </div> <!-- container -->
-
-<div id="statistics">
-	<!-- Piwik -->
-	<script type="text/javascript">
-		var pkBaseURL = (("https:" == document.location.protocol) ? "https://stats.yetanotherblog.de/" : "http://stats.yetanotherblog.de/");
-		document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
-	</script>
-	<script type="text/javascript">
-		piwik_action_name = '';
-		piwik_idsite = 1;
-		piwik_url = pkBaseURL + "piwik.php";
-		piwik_log(piwik_action_name, piwik_idsite, piwik_url);
-	</script>
-	<!-- End Piwik Tag -->
-</div>
 
 </body>
 </html>
