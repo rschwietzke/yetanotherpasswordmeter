@@ -227,7 +227,7 @@ function PasswordMeter()
 		formula: "TBD",
 		status : this.STATUS.FAILED,
 		rating : 0,
-		factor : -5,
+		factor : -3,
 		bonus  : 0,
 		penalty: 0
 	};
