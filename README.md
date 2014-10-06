@@ -10,7 +10,7 @@ The meter is meant to motivate you to choose better passwords. It is an educatio
 It does not guarantee any safety, it does not 100% make passwords strong, because it cannot not read the content, just the pattern. It does not motivate you to pick a different password for another service... that is something you should do.
 
 ## License
-Yet Another Password Meter is licensed under MIT License. See LICENSE for full details.
+Yet Another Password Meter is licensed under MIT License. See [LICENSE](LICENSE) for full details.
 
 ## Libraries Used
 
