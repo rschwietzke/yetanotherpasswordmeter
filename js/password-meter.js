@@ -355,12 +355,19 @@ function PasswordMeter()
 	{
 		// german and english keyboard text
 		data: [	"qwertzuiopasdfghjklyxcvbnm", "!\"§$%&/()=", // de
-				"1234567890", // de numbers
-				"qaywsxedcrfvtgbzhnujmik,ol.pö-üä+#", // de up-down
+			"1234567890", // de numbers
+			"qaywsxedcrfvtgbzhnujmik,ol.pö-üä+#", // de up-down
 
-			    "qwertyuiopasdfghjklzyxcvbnm", "!@#$%^&*()_", // en
-				"1234567890", // en numbers
-		        "qazwsxedcrfvtgbyhnujmik,ol.p;/[']\\" // en up-down
+			"qwertyuiopasdfghjklzyxcvbnm", "!@#$%^&*()_", // en
+			"1234567890", // en numbers
+		        "qazwsxedcrfvtgbyhnujmik,ol.p;/[']\\", // en up-down
+		        
+		        "azertyuiop^$qsdfghjklmù*<wxcvbn,;:!","&é\"'(-è_çà)=", // fr
+		        "1234567890°+", // fr number
+		        "aqwzsxedcrfvtgbyhnuj,ik;ol:pm!^ù$*", // fr up-down
+
+		        "0321654987", "7894561230", "9876543210", "0147258369", // reverse numeric
+		        "abcdefghijklmnopqrstuvwxyz"// alphabet
 		],
 		length: 3, // how long is the pattern to check and blame for?
 
