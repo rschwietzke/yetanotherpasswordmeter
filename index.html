@@ -12,6 +12,8 @@
 	<script type="text/javascript" src="js/jquery.hoverIntent-1.8.0.min.js"><!-- nothing --></script>
 	<script type="text/javascript" src="js/jquery.cluetip-1.2.10.min.js"><!-- nothing --></script>
 	<script type="text/javascript" src="js/password-meter.js"><!-- nothing --></script>
+	<script type="text/javascript" src="js/sha1.min.js"><!-- nothing --></script>
+	<script type="text/javascript" src="js/hibp.js"><!-- nothing --></script>	
 
 	<!--
 	The MIT License (MIT)
@@ -149,6 +151,8 @@
 		$("#originalscore").html(pm.float2str(pm.Score.count));
 		$("#beforeRedundancyScore").html(pm.float2str(pm.Score.beforeRedundancy));
 		$("#redundancy").html(pm.float2str(pm.Redundancy.count));
+		$("#hibp").html("Start search");
+		$("#hibpline").removeClass("warning");		
 
 		// clean the last state marker
 		cleanState();
@@ -197,7 +201,6 @@
 
  		// assign YearPatterns information
 		assignData("#YearPatterns", pm.YearPatterns, pm);
-
 
 		// set complexity
 		var complexity = pm.Complexity.value;
@@ -302,6 +305,18 @@
 					positionBy: 'auto', // next to the mouse
 					cluetipClass: 'yapm'
 				});
+				
+			$("#passwordDetails td.description a").cluetip(
+				{
+					fx: {open: "fadeIn"},
+					width: 350,
+					local: true,
+					hideLocal: true,
+					attribute:  'rel',    // the attribute to be used for fetching the clueTip's body content
+				    titleAttribute: 'title',  // the attribute to be used for fetching the clueTip's title
+					positionBy: 'auto', // next to the mouse
+					cluetipClass: 'yapm'
+				});
 
 			// set version
 			$("#footer .version").html(new PasswordMeter().version);
@@ -382,7 +397,7 @@
 			<table>
 				<tr class="password">
 					<td class="key">Password:</td>
-					<td>
+					<td class="description">
 						<form id="passwordForm" action="#">
 						<fieldset>
 							<input type="text" value="" id="password" name="password" maxlength="255" onkeyup="checkPassword(this.value);" />
@@ -394,34 +409,38 @@
 				</tr>
 				<tr class="visibility">
 					<td class="key">Visibility:</td>
-					<td>
+					<td class="description">
 						<a href="#" id="showPassword" onclick="togglePasswordMask('Show'); return false;">Show</a>
 						<a href="#" id="hidePassword" onclick="togglePasswordMask('Hide'); return false;">Hide</a>
 					</td>
 				</tr>
 				<tr>
 					<td class="key">Before Redundancy Score:</td>
-					<td><span id="beforeRedundancyScore">0</span></td>
+					<td class="description"><span id="beforeRedundancyScore">0</span></td>
 				</tr>
 				<tr>
 					<td class="key">Redundancy:</td>
-					<td><span id="redundancy">0</span></td>
+					<td class="description"span id="redundancy">0</span></td>
 				</tr>
 				<tr>
 					<td class="key">Entropy:</td>
-					<td><span id="entropy">0</span></td>
+					<td class="description"><span id="entropy">0</span></td>
 				</tr>
 				<tr>
 					<td class="key">Original Score:</td>
-					<td><span id="originalscore">0</span></td>
+					<td class="description"><span id="originalscore">0</span></td>
 				</tr>
 				<tr>
 					<td class="key">Score:</td>
-					<td><span id="score">0%</span></td>
+					<td class="description"><span id="score">0%</span></td>
 				</tr>
+				<tr id="hibpline">
+					<td class="key">Pwned password:</td>
+					<td class="description"><a href="#" id="hibp" onclick="HibpRequest(); return false;" title="Pwned Password" rel="#PwnedPasswordDesc">Start search</a></td>
+				</tr>					
 				<tr>
 					<td class="key">Complexity:</td>
-					<td><span id="complexity">Too Short</span></td>
+					<td class="description"><span id="complexity">Too Short</span></td>
 				</tr>
 			</table>
 		</div>
@@ -746,6 +765,14 @@
 				The penalty is always applied.
 			</p>
 		</div>
+		<div id="PwnedPasswordDesc">
+			<p>
+				Check on haveibeenpassword.com if the password has been compromised in a data breach (over 300 millions leaked passwords database).
+			</p>
+			<p class="warningtext";>
+				If it's one of them, the password is compromised: don't use it!</a>
+			</p>
+		</div>		
 	</div>
 </div> <!-- container -->
 
