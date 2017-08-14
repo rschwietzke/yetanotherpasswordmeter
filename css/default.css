@@ -15,6 +15,10 @@ a
 	color: #551a8b;
 }
 
+p.warningtext {
+	color: #ef0000;
+}
+
 table
 {
 	width: 100%;
@@ -147,7 +151,14 @@ h2
 		color: #09AF00;
 	}
 
-
+#hibp
+{
+}
+	.warning
+	{
+		background-color: #ffafb2;
+	}
+	
 /**
  * The main container
  */
