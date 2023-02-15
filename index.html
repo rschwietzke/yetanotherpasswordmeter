@@ -6,7 +6,7 @@
 
 	<link href="css/default.css" rel="stylesheet" type="text/css" />
 	<link href="css/jquery.cluetip-1.2.10.css" rel="stylesheet" type="text/css" />
-
+	
 	<script type="text/javascript" src="js/jquery-1.11.1.min.js"><!-- nothing --></script>
 	<script type="text/javascript" src="js/jquery-ui-1.11.1.custom.min.js"><!-- nothing --></script>
 	<script type="text/javascript" src="js/jquery.hoverIntent-1.8.0.min.js"><!-- nothing --></script>
@@ -14,6 +14,7 @@
 	<script type="text/javascript" src="js/password-meter.js"><!-- nothing --></script>
 	<script type="text/javascript" src="js/sha1.min.js"><!-- nothing --></script>
 	<script type="text/javascript" src="js/hibp.js"><!-- nothing --></script>	
+	
 
 	<!--
 	The MIT License (MIT)
@@ -151,8 +152,9 @@
 		$("#originalscore").html(pm.float2str(pm.Score.count));
 		$("#beforeRedundancyScore").html(pm.float2str(pm.Score.beforeRedundancy));
 		$("#redundancy").html(pm.float2str(pm.Redundancy.count));
-		$("#hibp").html("Start search");
-		$("#hibpline").removeClass("warning");		
+		$("#hibp").html("⚪ Start search");
+		//$("#hibpline").removeClass("warning");
+		document.getElementById('hibp').style.color = "";		
 
 		// clean the last state marker
 		cleanState();
@@ -435,8 +437,10 @@
 					<td class="description"><span id="score">0%</span></td>
 				</tr>
 				<tr id="hibpline">
-					<td class="key">Pwned password:</td>
-					<td class="description"><a href="#" id="hibp" onclick="HibpRequest(); return false;" title="Pwned Password" rel="#PwnedPasswordDesc">Start search</a></td>
+					<td class="key">Leaked password:</td>
+					<!--<td class="description"><button type="button" id="checkPass">Check password</button>&nbsp;<a id="danger" value="" style="color: red;"><span><a id="success" value="" style="color: green;"></span></td>-->
+					<td class="description"><span><a href="#" id="hibp" title="Leaked password" rel="#LeakedPasswordDesc">Start search on haveibeenpwned.com</a></span></td>
+					<script type="text/javascript" src="js/check_hibp.js"><!-- nothing --></script>	
 				</tr>					
 				<tr>
 					<td class="key">Complexity:</td>
@@ -765,12 +769,25 @@
 				The penalty is always applied.
 			</p>
 		</div>
-		<div id="PwnedPasswordDesc">
+		<div id="LeakedPasswordDesc">
 			<p>
-				Check on haveibeenpassword.com if the password has been compromised in a data breach (over 300 millions leaked passwords database).
+				Check on HaveIBeenPwned.com if the password has been compromised in a data breach (hundred of millions leaked passwords database).
 			</p>
+			&nbsp;
+			<p>
+				The password is NOT send on Internet while testing it. Technichal explainations on:
+			</p>
+			&nbsp;
+			<p>
+			https://haveibeenpwned.com/API/v3
+			</p>
+			&nbsp;
 			<p class="warningtext";>
-				If it's one of them, the password is compromised: don't use it!</a>
+				🔴 Present in leaked databases, don't use this one!
+				
+			</p>
+			<p>
+				🟢 No database leaked with this password.
 			</p>
 		</div>		
 	</div>
