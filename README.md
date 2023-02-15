@@ -1,7 +1,7 @@
 # Yet Another Password Meter
 
 ## Introduction 
-Yet Another Password Meter on GITHub is the next version of http://www.yetanotherpasswordmeter.com/. Is is basically the moved version from no-version control to really great version control.
+Yet Another Password Meter on GITHub is what is left form the previsouly used yetanotherpasswordmeter.com website. Is is basically the moved version from no-version control to really great version control.
 
 ## What does it do?
 The meter is meant to motivate you to choose better passwords. It is an educational tool too.
