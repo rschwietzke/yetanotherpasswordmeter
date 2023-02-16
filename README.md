@@ -19,4 +19,4 @@ Yet Another Password Meter is licensed under MIT License. See [LICENSE](LICENSE)
 * string-entropy, https://github.com/mvhenten/string-entropy, MIT License
 * clueTip, https://github.com/kswedberg/jquery-cluetip/, MIT License
 * hoverIntent, https://github.com/briancherne/jquery-hoverIntent, MIT License
-* js-sha1, https://github.com/emn178/js-sha1, MIT License
+* hibp-js, https://github.com/mehdibo/hibp-js, MIT License
